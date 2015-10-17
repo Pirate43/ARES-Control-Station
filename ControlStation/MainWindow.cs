@@ -9,26 +9,26 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RestSharp;
 using System.IO;
+using System.Net.Sockets;
 
 namespace ControlStation
 {
     
     public partial class MainWindow : Form
     {
-        public void log(String s)
-        {
-            console.AppendText("\r\n" + GetTimestamp(DateTime.Now) + " " + s + "");
-        }
-        
+                
         RestClient client = new RestClient("https://api.particle.io");
         RestRequest request = new RestRequest("/v1/devices/250047001147343339383037/potvalue?access_token=55b63ee34abe2ef6078105497b30236d3f5b83e3");
+
+        Socket socket;
+
 
         public MainWindow()
         {
             InitializeComponent();
             this.Visible = true;
             this.Focus();
-            textboxIP.Text = "192.168.1.150";
+            textboxIP.Text = "raspberrypi";
             console.Text = GetTimestamp(DateTime.Now) + " initialized.";
         }
 
@@ -56,8 +56,22 @@ namespace ControlStation
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             log("Connecting to " + textboxIP.Text + "..");
             batteryBar.PerformStep();
+            try {
+                socket.Connect(textboxIP.Text, 25555);
+            } catch(Exception ex)
+            {
+                log("Problem connecting: " + ex.Message);
+                return;
+            }
+            log("connected!");
+            textboxIP.Enabled = false;
+            textboxIP.BackColor = Color.Green;
+            buttonConnect.Enabled = false;
+            disconnectButton.Enabled = true;
+            disconnectButton.BackColor = Color.Transparent;
         }
 
         private void saveConsoleLogsToolStripMenuItem_Click(object sender, EventArgs e) // save console contents to log file
@@ -87,6 +101,30 @@ namespace ControlStation
             a.Show();
         }
 
+        private void disconnectButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                socket.Close();
+            }
+            catch (Exception ex)
+            {
+                log("Error disconnecting: " + ex.Message);
+                return;
+            }
+            log("Successfully disconnected.");
+            textboxIP.Enabled = true;
+            textboxIP.BackColor = Color.White;
+            buttonConnect.Enabled = true;
+            disconnectButton.Enabled = false;
+            disconnectButton.BackColor = Color.Silver;
+        }
+
+        //################      HELPER FUNCTIONS      ##################\\
+        public void log(String s)
+        {
+            console.AppendText("\r\n" + GetTimestamp(DateTime.Now) + " " + s + "");
+        }
         public static String GetTimestamp(DateTime value)
         {
             return value.ToString("HH:mm:ss");
@@ -94,6 +132,41 @@ namespace ControlStation
         public static String GetFilePathTimestamp(DateTime value)
         {
             return value.ToString("yyyyMMdd--HHmmss");
+        }
+        public void send(String s)
+        {
+            socket.Send(System.Text.Encoding.UTF8.GetBytes(s));
+        }
+        private void btn_MouseDown(object sender, MouseEventArgs e)
+        {
+            var btn = (FontAwesomeIcons.IconButton)sender;
+            btn.BackColor = Color.Gold;
+            switch(btn.Name)
+            {
+                case "goForward":
+                    send("^");
+                    break;
+                case "goBackward":
+                    send("v");
+                    break;
+                case "turnCW":
+                    send(">");
+                    break;
+                case "turnCCW":
+                    send("<");
+                    break;
+                case "disconnectButton":
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void btn_MouseUp(object sender, MouseEventArgs e)
+        {
+            var btn = (FontAwesomeIcons.IconButton)sender;
+            btn.BackColor = Color.Transparent;
+            send("*");
+            if (btn.Name == "disconnectButton") btn.BackColor = Color.Silver;
         }
     }
     public class ParticleResponse

@@ -50,14 +50,15 @@
             this.goForward = new FontAwesomeIcons.IconButton();
             this.turnCCW = new FontAwesomeIcons.IconButton();
             this.miningGroup = new System.Windows.Forms.GroupBox();
-            this.lowerMining = new FontAwesomeIcons.IconButton();
-            this.doMining = new FontAwesomeIcons.IconButton();
-            this.raiseMining = new FontAwesomeIcons.IconButton();
-            this.doDump = new FontAwesomeIcons.IconButton();
             this.labelDescriptions = new System.Windows.Forms.Label();
+            this.doDump = new FontAwesomeIcons.IconButton();
+            this.raiseMining = new FontAwesomeIcons.IconButton();
+            this.doMining = new FontAwesomeIcons.IconButton();
+            this.lowerMining = new FontAwesomeIcons.IconButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.batteryBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.batteryBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.disconnectButton = new FontAwesomeIcons.IconButton();
             this.menuStrip1.SuspendLayout();
             this.transportGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).BeginInit();
@@ -65,11 +66,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.goForward)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnCCW)).BeginInit();
             this.miningGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lowerMining)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.doMining)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.raiseMining)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.doDump)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.raiseMining)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.doMining)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lowerMining)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.disconnectButton)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -232,6 +234,8 @@
             this.goBackward.TabIndex = 12;
             this.goBackward.TabStop = false;
             this.goBackward.ToolTipText = null;
+            this.goBackward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.goBackward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // turnCW
             // 
@@ -246,6 +250,8 @@
             this.turnCW.TabIndex = 9;
             this.turnCW.TabStop = false;
             this.turnCW.ToolTipText = null;
+            this.turnCW.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.turnCW.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // goForward
             // 
@@ -260,6 +266,8 @@
             this.goForward.TabIndex = 11;
             this.goForward.TabStop = false;
             this.goForward.ToolTipText = null;
+            this.goForward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.goForward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // turnCCW
             // 
@@ -274,6 +282,8 @@
             this.turnCCW.TabIndex = 10;
             this.turnCCW.TabStop = false;
             this.turnCCW.ToolTipText = null;
+            this.turnCCW.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.turnCCW.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // miningGroup
             // 
@@ -289,47 +299,14 @@
             this.miningGroup.TabStop = false;
             this.miningGroup.Text = "Mining";
             // 
-            // lowerMining
+            // labelDescriptions
             // 
-            this.lowerMining.ActiveColor = System.Drawing.Color.Black;
-            this.lowerMining.BackColor = System.Drawing.Color.Transparent;
-            this.lowerMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lowerMining.IconType = FontAwesomeIcons.IconType.ChevronCircleDown;
-            this.lowerMining.InActiveColor = System.Drawing.Color.DimGray;
-            this.lowerMining.Location = new System.Drawing.Point(17, 26);
-            this.lowerMining.Name = "lowerMining";
-            this.lowerMining.Size = new System.Drawing.Size(39, 44);
-            this.lowerMining.TabIndex = 11;
-            this.lowerMining.TabStop = false;
-            this.lowerMining.ToolTipText = null;
-            // 
-            // doMining
-            // 
-            this.doMining.ActiveColor = System.Drawing.Color.Black;
-            this.doMining.BackColor = System.Drawing.Color.Transparent;
-            this.doMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.doMining.IconType = FontAwesomeIcons.IconType.Cog;
-            this.doMining.InActiveColor = System.Drawing.Color.DimGray;
-            this.doMining.Location = new System.Drawing.Point(68, 26);
-            this.doMining.Name = "doMining";
-            this.doMining.Size = new System.Drawing.Size(39, 44);
-            this.doMining.TabIndex = 12;
-            this.doMining.TabStop = false;
-            this.doMining.ToolTipText = null;
-            // 
-            // raiseMining
-            // 
-            this.raiseMining.ActiveColor = System.Drawing.Color.Black;
-            this.raiseMining.BackColor = System.Drawing.Color.Transparent;
-            this.raiseMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.raiseMining.IconType = FontAwesomeIcons.IconType.ChevronCircleUp;
-            this.raiseMining.InActiveColor = System.Drawing.Color.DimGray;
-            this.raiseMining.Location = new System.Drawing.Point(119, 26);
-            this.raiseMining.Name = "raiseMining";
-            this.raiseMining.Size = new System.Drawing.Size(39, 44);
-            this.raiseMining.TabIndex = 13;
-            this.raiseMining.TabStop = false;
-            this.raiseMining.ToolTipText = null;
+            this.labelDescriptions.AutoSize = true;
+            this.labelDescriptions.Location = new System.Drawing.Point(17, 77);
+            this.labelDescriptions.Name = "labelDescriptions";
+            this.labelDescriptions.Size = new System.Drawing.Size(189, 13);
+            this.labelDescriptions.TabIndex = 15;
+            this.labelDescriptions.Text = "Lower        Mine         Raise        Dump";
             // 
             // doDump
             // 
@@ -344,15 +321,56 @@
             this.doDump.TabIndex = 14;
             this.doDump.TabStop = false;
             this.doDump.ToolTipText = null;
+            this.doDump.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.doDump.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
-            // labelDescriptions
+            // raiseMining
             // 
-            this.labelDescriptions.AutoSize = true;
-            this.labelDescriptions.Location = new System.Drawing.Point(17, 77);
-            this.labelDescriptions.Name = "labelDescriptions";
-            this.labelDescriptions.Size = new System.Drawing.Size(189, 13);
-            this.labelDescriptions.TabIndex = 15;
-            this.labelDescriptions.Text = "Lower        Mine         Raise        Dump";
+            this.raiseMining.ActiveColor = System.Drawing.Color.Black;
+            this.raiseMining.BackColor = System.Drawing.Color.Transparent;
+            this.raiseMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.raiseMining.IconType = FontAwesomeIcons.IconType.ChevronCircleUp;
+            this.raiseMining.InActiveColor = System.Drawing.Color.DimGray;
+            this.raiseMining.Location = new System.Drawing.Point(119, 26);
+            this.raiseMining.Name = "raiseMining";
+            this.raiseMining.Size = new System.Drawing.Size(39, 44);
+            this.raiseMining.TabIndex = 13;
+            this.raiseMining.TabStop = false;
+            this.raiseMining.ToolTipText = null;
+            this.raiseMining.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.raiseMining.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
+            // 
+            // doMining
+            // 
+            this.doMining.ActiveColor = System.Drawing.Color.Black;
+            this.doMining.BackColor = System.Drawing.Color.Transparent;
+            this.doMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.doMining.IconType = FontAwesomeIcons.IconType.Cog;
+            this.doMining.InActiveColor = System.Drawing.Color.DimGray;
+            this.doMining.Location = new System.Drawing.Point(68, 26);
+            this.doMining.Name = "doMining";
+            this.doMining.Size = new System.Drawing.Size(39, 44);
+            this.doMining.TabIndex = 12;
+            this.doMining.TabStop = false;
+            this.doMining.ToolTipText = null;
+            this.doMining.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.doMining.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
+            // 
+            // lowerMining
+            // 
+            this.lowerMining.ActiveColor = System.Drawing.Color.Black;
+            this.lowerMining.BackColor = System.Drawing.Color.Transparent;
+            this.lowerMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lowerMining.IconType = FontAwesomeIcons.IconType.ChevronCircleDown;
+            this.lowerMining.InActiveColor = System.Drawing.Color.DimGray;
+            this.lowerMining.Location = new System.Drawing.Point(17, 26);
+            this.lowerMining.Name = "lowerMining";
+            this.lowerMining.Size = new System.Drawing.Size(39, 44);
+            this.lowerMining.TabIndex = 11;
+            this.lowerMining.TabStop = false;
+            this.lowerMining.ToolTipText = null;
+            this.lowerMining.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.lowerMining.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // statusStrip1
             // 
@@ -365,6 +383,12 @@
             this.statusStrip1.TabIndex = 15;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(47, 17);
+            this.toolStripStatusLabel1.Text = "Battery:";
+            // 
             // batteryBar
             // 
             this.batteryBar.Name = "batteryBar";
@@ -372,11 +396,23 @@
             this.batteryBar.Step = -1;
             this.batteryBar.Value = 100;
             // 
-            // toolStripStatusLabel1
+            // disconnectButton
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(47, 17);
-            this.toolStripStatusLabel1.Text = "Battery:";
+            this.disconnectButton.ActiveColor = System.Drawing.Color.Maroon;
+            this.disconnectButton.BackColor = System.Drawing.Color.Silver;
+            this.disconnectButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.disconnectButton.Enabled = false;
+            this.disconnectButton.IconType = FontAwesomeIcons.IconType.ChainBroken;
+            this.disconnectButton.InActiveColor = System.Drawing.Color.DimGray;
+            this.disconnectButton.Location = new System.Drawing.Point(213, 408);
+            this.disconnectButton.Name = "disconnectButton";
+            this.disconnectButton.Size = new System.Drawing.Size(45, 45);
+            this.disconnectButton.TabIndex = 16;
+            this.disconnectButton.TabStop = false;
+            this.disconnectButton.ToolTipText = null;
+            this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
+            this.disconnectButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.disconnectButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // MainWindow
             // 
@@ -384,6 +420,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(544, 486);
+            this.Controls.Add(this.disconnectButton);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.miningGroup);
             this.Controls.Add(this.transportGroup);
@@ -410,12 +447,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.turnCCW)).EndInit();
             this.miningGroup.ResumeLayout(false);
             this.miningGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lowerMining)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.doMining)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.raiseMining)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.doDump)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.raiseMining)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.doMining)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lowerMining)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.disconnectButton)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -452,6 +490,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar batteryBar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private FontAwesomeIcons.IconButton disconnectButton;
     }
 }
 
