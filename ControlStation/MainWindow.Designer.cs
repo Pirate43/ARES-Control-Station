@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveConsoleLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,6 +56,10 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.batteryBar = new System.Windows.Forms.ToolStripProgressBar();
             this.disconnectButton = new FontAwesomeIcons.IconButton();
+            this.miscGroup = new System.Windows.Forms.GroupBox();
+            this.lblDisconnect = new System.Windows.Forms.Label();
+            this.gamepadButton = new FontAwesomeIcons.IconButton();
+            this.lblGamepad = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.transportGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).BeginInit();
@@ -72,37 +73,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.lowerMining)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.disconnectButton)).BeginInit();
+            this.miscGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gamepadButton)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 377);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 29);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(17, 409);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Update";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 353);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(129, 24);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Sensor Value:";
             // 
             // menuStrip1
             // 
@@ -112,7 +85,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(544, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -156,7 +129,7 @@
             // 
             // textboxIP
             // 
-            this.textboxIP.Location = new System.Drawing.Point(63, 37);
+            this.textboxIP.Location = new System.Drawing.Point(59, 34);
             this.textboxIP.Name = "textboxIP";
             this.textboxIP.Size = new System.Drawing.Size(100, 20);
             this.textboxIP.TabIndex = 4;
@@ -164,7 +137,7 @@
             // labelIP
             // 
             this.labelIP.AutoSize = true;
-            this.labelIP.Location = new System.Drawing.Point(8, 40);
+            this.labelIP.Location = new System.Drawing.Point(5, 37);
             this.labelIP.Name = "labelIP";
             this.labelIP.Size = new System.Drawing.Size(52, 13);
             this.labelIP.TabIndex = 5;
@@ -172,7 +145,7 @@
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(169, 35);
+            this.buttonConnect.Location = new System.Drawing.Point(162, 32);
             this.buttonConnect.Name = "buttonConnect";
             this.buttonConnect.Size = new System.Drawing.Size(75, 23);
             this.buttonConnect.TabIndex = 6;
@@ -184,12 +157,12 @@
             // 
             this.console.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.console.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.console.Location = new System.Drawing.Point(264, 51);
+            this.console.Location = new System.Drawing.Point(261, 51);
             this.console.MaxLength = 99999;
             this.console.Multiline = true;
             this.console.Name = "console";
             this.console.ReadOnly = true;
-            this.console.Size = new System.Drawing.Size(274, 402);
+            this.console.Size = new System.Drawing.Size(511, 402);
             this.console.TabIndex = 7;
             this.console.TabStop = false;
             // 
@@ -214,7 +187,8 @@
             this.transportGroup.Controls.Add(this.turnCW);
             this.transportGroup.Controls.Add(this.goForward);
             this.transportGroup.Controls.Add(this.turnCCW);
-            this.transportGroup.Location = new System.Drawing.Point(17, 65);
+            this.transportGroup.Enabled = false;
+            this.transportGroup.Location = new System.Drawing.Point(8, 60);
             this.transportGroup.Name = "transportGroup";
             this.transportGroup.Size = new System.Drawing.Size(227, 132);
             this.transportGroup.TabIndex = 13;
@@ -228,7 +202,7 @@
             this.goBackward.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.goBackward.IconType = FontAwesomeIcons.IconType.ArrowDown;
             this.goBackward.InActiveColor = System.Drawing.Color.DimGray;
-            this.goBackward.Location = new System.Drawing.Point(93, 78);
+            this.goBackward.Location = new System.Drawing.Point(56, 79);
             this.goBackward.Name = "goBackward";
             this.goBackward.Size = new System.Drawing.Size(39, 44);
             this.goBackward.TabIndex = 12;
@@ -244,7 +218,7 @@
             this.turnCW.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.turnCW.IconType = FontAwesomeIcons.IconType.Repeat;
             this.turnCW.InActiveColor = System.Drawing.Color.DimGray;
-            this.turnCW.Location = new System.Drawing.Point(152, 45);
+            this.turnCW.Location = new System.Drawing.Point(101, 45);
             this.turnCW.Name = "turnCW";
             this.turnCW.Size = new System.Drawing.Size(39, 44);
             this.turnCW.TabIndex = 9;
@@ -260,7 +234,7 @@
             this.goForward.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.goForward.IconType = FontAwesomeIcons.IconType.ArrowUp;
             this.goForward.InActiveColor = System.Drawing.Color.DimGray;
-            this.goForward.Location = new System.Drawing.Point(93, 14);
+            this.goForward.Location = new System.Drawing.Point(56, 15);
             this.goForward.Name = "goForward";
             this.goForward.Size = new System.Drawing.Size(39, 44);
             this.goForward.TabIndex = 11;
@@ -276,7 +250,7 @@
             this.turnCCW.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.turnCCW.IconType = FontAwesomeIcons.IconType.RotateLeft;
             this.turnCCW.InActiveColor = System.Drawing.Color.DimGray;
-            this.turnCCW.Location = new System.Drawing.Point(32, 45);
+            this.turnCCW.Location = new System.Drawing.Point(10, 45);
             this.turnCCW.Name = "turnCCW";
             this.turnCCW.Size = new System.Drawing.Size(39, 44);
             this.turnCCW.TabIndex = 10;
@@ -292,9 +266,10 @@
             this.miningGroup.Controls.Add(this.raiseMining);
             this.miningGroup.Controls.Add(this.doMining);
             this.miningGroup.Controls.Add(this.lowerMining);
-            this.miningGroup.Location = new System.Drawing.Point(17, 211);
+            this.miningGroup.Enabled = false;
+            this.miningGroup.Location = new System.Drawing.Point(8, 202);
             this.miningGroup.Name = "miningGroup";
-            this.miningGroup.Size = new System.Drawing.Size(227, 100);
+            this.miningGroup.Size = new System.Drawing.Size(227, 82);
             this.miningGroup.TabIndex = 14;
             this.miningGroup.TabStop = false;
             this.miningGroup.Text = "Mining";
@@ -302,11 +277,11 @@
             // labelDescriptions
             // 
             this.labelDescriptions.AutoSize = true;
-            this.labelDescriptions.Location = new System.Drawing.Point(17, 77);
+            this.labelDescriptions.Location = new System.Drawing.Point(7, 62);
             this.labelDescriptions.Name = "labelDescriptions";
-            this.labelDescriptions.Size = new System.Drawing.Size(189, 13);
+            this.labelDescriptions.Size = new System.Drawing.Size(177, 13);
             this.labelDescriptions.TabIndex = 15;
-            this.labelDescriptions.Text = "Lower        Mine         Raise        Dump";
+            this.labelDescriptions.Text = "  Lower     Mine       Raise       Dump";
             // 
             // doDump
             // 
@@ -315,9 +290,9 @@
             this.doDump.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.doDump.IconType = FontAwesomeIcons.IconType.AngleDoubleDown;
             this.doDump.InActiveColor = System.Drawing.Color.DimGray;
-            this.doDump.Location = new System.Drawing.Point(170, 26);
+            this.doDump.Location = new System.Drawing.Point(145, 19);
             this.doDump.Name = "doDump";
-            this.doDump.Size = new System.Drawing.Size(39, 44);
+            this.doDump.Size = new System.Drawing.Size(40, 40);
             this.doDump.TabIndex = 14;
             this.doDump.TabStop = false;
             this.doDump.ToolTipText = null;
@@ -331,9 +306,9 @@
             this.raiseMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.raiseMining.IconType = FontAwesomeIcons.IconType.ChevronCircleUp;
             this.raiseMining.InActiveColor = System.Drawing.Color.DimGray;
-            this.raiseMining.Location = new System.Drawing.Point(119, 26);
+            this.raiseMining.Location = new System.Drawing.Point(100, 19);
             this.raiseMining.Name = "raiseMining";
-            this.raiseMining.Size = new System.Drawing.Size(39, 44);
+            this.raiseMining.Size = new System.Drawing.Size(40, 40);
             this.raiseMining.TabIndex = 13;
             this.raiseMining.TabStop = false;
             this.raiseMining.ToolTipText = null;
@@ -347,9 +322,9 @@
             this.doMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.doMining.IconType = FontAwesomeIcons.IconType.Cog;
             this.doMining.InActiveColor = System.Drawing.Color.DimGray;
-            this.doMining.Location = new System.Drawing.Point(68, 26);
+            this.doMining.Location = new System.Drawing.Point(55, 19);
             this.doMining.Name = "doMining";
-            this.doMining.Size = new System.Drawing.Size(39, 44);
+            this.doMining.Size = new System.Drawing.Size(40, 40);
             this.doMining.TabIndex = 12;
             this.doMining.TabStop = false;
             this.doMining.ToolTipText = null;
@@ -363,9 +338,9 @@
             this.lowerMining.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lowerMining.IconType = FontAwesomeIcons.IconType.ChevronCircleDown;
             this.lowerMining.InActiveColor = System.Drawing.Color.DimGray;
-            this.lowerMining.Location = new System.Drawing.Point(17, 26);
+            this.lowerMining.Location = new System.Drawing.Point(10, 19);
             this.lowerMining.Name = "lowerMining";
-            this.lowerMining.Size = new System.Drawing.Size(39, 44);
+            this.lowerMining.Size = new System.Drawing.Size(40, 40);
             this.lowerMining.TabIndex = 11;
             this.lowerMining.TabStop = false;
             this.lowerMining.ToolTipText = null;
@@ -379,7 +354,7 @@
             this.batteryBar});
             this.statusStrip1.Location = new System.Drawing.Point(0, 464);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(544, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(784, 22);
             this.statusStrip1.TabIndex = 15;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -402,11 +377,11 @@
             this.disconnectButton.BackColor = System.Drawing.Color.Silver;
             this.disconnectButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.disconnectButton.Enabled = false;
-            this.disconnectButton.IconType = FontAwesomeIcons.IconType.ChainBroken;
+            this.disconnectButton.IconType = FontAwesomeIcons.IconType.MinusCircle;
             this.disconnectButton.InActiveColor = System.Drawing.Color.DimGray;
-            this.disconnectButton.Location = new System.Drawing.Point(213, 408);
+            this.disconnectButton.Location = new System.Drawing.Point(8, 19);
             this.disconnectButton.Name = "disconnectButton";
-            this.disconnectButton.Size = new System.Drawing.Size(45, 45);
+            this.disconnectButton.Size = new System.Drawing.Size(40, 40);
             this.disconnectButton.TabIndex = 16;
             this.disconnectButton.TabStop = false;
             this.disconnectButton.ToolTipText = null;
@@ -414,13 +389,60 @@
             this.disconnectButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
             this.disconnectButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
+            // miscGroup
+            // 
+            this.miscGroup.Controls.Add(this.lblGamepad);
+            this.miscGroup.Controls.Add(this.gamepadButton);
+            this.miscGroup.Controls.Add(this.lblDisconnect);
+            this.miscGroup.Controls.Add(this.disconnectButton);
+            this.miscGroup.Location = new System.Drawing.Point(10, 298);
+            this.miscGroup.Name = "miscGroup";
+            this.miscGroup.Size = new System.Drawing.Size(227, 100);
+            this.miscGroup.TabIndex = 17;
+            this.miscGroup.TabStop = false;
+            this.miscGroup.Text = "Misc Actions";
+            // 
+            // lblDisconnect
+            // 
+            this.lblDisconnect.AutoSize = true;
+            this.lblDisconnect.Location = new System.Drawing.Point(17, 62);
+            this.lblDisconnect.Name = "lblDisconnect";
+            this.lblDisconnect.Size = new System.Drawing.Size(24, 13);
+            this.lblDisconnect.TabIndex = 16;
+            this.lblDisconnect.Text = "d/c";
+            // 
+            // gamepadButton
+            // 
+            this.gamepadButton.ActiveColor = System.Drawing.Color.Black;
+            this.gamepadButton.BackColor = System.Drawing.Color.Transparent;
+            this.gamepadButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gamepadButton.IconType = FontAwesomeIcons.IconType.Gamepad;
+            this.gamepadButton.InActiveColor = System.Drawing.Color.DimGray;
+            this.gamepadButton.Location = new System.Drawing.Point(54, 19);
+            this.gamepadButton.Margin = new System.Windows.Forms.Padding(0);
+            this.gamepadButton.Name = "gamepadButton";
+            this.gamepadButton.Size = new System.Drawing.Size(40, 40);
+            this.gamepadButton.TabIndex = 17;
+            this.gamepadButton.TabStop = false;
+            this.gamepadButton.ToolTipText = null;
+            this.gamepadButton.Click += new System.EventHandler(this.gamepadButton_Click);
+            // 
+            // lblGamepad
+            // 
+            this.lblGamepad.AutoSize = true;
+            this.lblGamepad.Location = new System.Drawing.Point(49, 62);
+            this.lblGamepad.Name = "lblGamepad";
+            this.lblGamepad.Size = new System.Drawing.Size(53, 13);
+            this.lblGamepad.TabIndex = 18;
+            this.lblGamepad.Text = "Gamepad";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(544, 486);
-            this.Controls.Add(this.disconnectButton);
+            this.ClientSize = new System.Drawing.Size(784, 486);
+            this.Controls.Add(this.miscGroup);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.miningGroup);
             this.Controls.Add(this.transportGroup);
@@ -429,9 +451,6 @@
             this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.labelIP);
             this.Controls.Add(this.textboxIP);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -454,16 +473,15 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.disconnectButton)).EndInit();
+            this.miscGroup.ResumeLayout(false);
+            this.miscGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gamepadButton)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -491,6 +509,10 @@
         private System.Windows.Forms.ToolStripProgressBar batteryBar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private FontAwesomeIcons.IconButton disconnectButton;
+        private System.Windows.Forms.GroupBox miscGroup;
+        private System.Windows.Forms.Label lblDisconnect;
+        private FontAwesomeIcons.IconButton gamepadButton;
+        private System.Windows.Forms.Label lblGamepad;
     }
 }
 

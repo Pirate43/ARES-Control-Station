@@ -1,48 +1,109 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RestSharp;
 using System.IO;
 using System.Net.Sockets;
+using SharpDX;
+using SharpDX.DirectInput;
+using System.Drawing;
+using System.Threading.Tasks;
 
-namespace ControlStation
-{
-    
-    public partial class MainWindow : Form
-    {
-                
-        RestClient client = new RestClient("https://api.particle.io");
-        RestRequest request = new RestRequest("/v1/devices/250047001147343339383037/potvalue?access_token=55b63ee34abe2ef6078105497b30236d3f5b83e3");
+namespace ControlStation {
+
+    public partial class MainWindow : Form {
+
 
         Socket socket;
 
 
-        public MainWindow()
-        {
+        public void gamepad() {
+            var dInput = new DirectInput(); // Initialize DirectInput
+            var joystickGuid = Guid.Empty;  // Find a Joystick Guid
+            foreach (var deviceInstance in dInput.GetDevices(DeviceType.Gamepad,
+                    DeviceEnumerationFlags.AllDevices))
+                joystickGuid = deviceInstance.InstanceGuid;
+            // If Joystick not found, log to console.
+            if (joystickGuid == Guid.Empty) {
+                log("Error: No joystick or Gamepad found.");
+            }
+
+            // Instantiate the joystick
+            var joystick = new Joystick(dInput, joystickGuid);
+            log("Found Gamepad with GUID: " + joystickGuid);
+            log("Name: " + joystick.Properties.InstanceName);
+
+            // Query all suported ForceFeedback effects
+            var allEffects = joystick.GetEffects();
+            foreach (var effectInfo in allEffects)
+                log("Effect available " + effectInfo.Name);
+
+            // Set BufferSize in order to use buffered data.
+            joystick.Properties.BufferSize = 128;
+
+            // Acquire the joystick
+            joystick.Acquire();
+
+            // Set deadzones to 10%
+            joystick.Properties.DeadZone = 1000;
+
+
+            /// Button Mappings:::
+            /// ============================
+            /// - Buttons0 = ■
+            /// - Buttons1 = x
+            /// - Buttons2 = ●
+            /// - Buttons3 = ▲
+            /// - Buttons4 = Left Bumper
+            /// - Buttons5 = Right Bumper
+            /// - Buttons6 = Left Trigger
+            /// - Buttons7 = Right Trigger
+            /// - Buttons8 = Share
+            /// - Buttons9 = Options
+            /// - Buttons10 = Left Stick
+            /// - Buttons11 = Right Stick
+            /// - Buttons12 = PS Button
+            /// 
+            /// - DPAD (PointOfViewControllers0) ::
+            ///     0 = up
+            ///     18000 = down
+            ///     27000 = left
+            ///     9000 = right
+            ///     -1 = release
+            ///
+            while (true) {
+                joystick.Poll();
+                var datas = joystick.GetBufferedData();
+                foreach (var state in datas) {
+                    String offset = state.Offset.ToString();
+                    int value = int.Parse(state.Value.ToString());
+                    log(offset + " " + value);
+                    
+                    // end gamepad on share button
+                    if (offset == "Buttons8" && value > 64) {
+                        log("Share button pressed. Gamepad stopped.");
+                        return;
+                    }
+                }
+            }
+        }
+
+        // start gamepad in a separate task
+        private void gamepadButton_Click(object sender, EventArgs e) {
+            Task t = Task.Run(() => {
+                gamepad();
+            });
+        }
+
+        public MainWindow() {
             InitializeComponent();
             this.Visible = true;
             this.Focus();
             textboxIP.Text = "raspberrypi";
             console.Text = GetTimestamp(DateTime.Now) + " initialized.";
+            
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-                var response = client.Execute<ParticleResponse>(request);
-                label1.Text = "Requested value";
-                System.Threading.Thread.Sleep(2000);
-                if (response != null)
-                {
-                    ParticleResponse obj = response.Data;
-                    label1.Text = obj.result;
-                }
-        }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) // exit app
         {
@@ -54,24 +115,24 @@ namespace ControlStation
             Application.Exit();
         }
 
-        private void buttonConnect_Click(object sender, EventArgs e)
-        {
+        private void buttonConnect_Click(object sender, EventArgs e) {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             log("Connecting to " + textboxIP.Text + "..");
             batteryBar.PerformStep();
             try {
                 socket.Connect(textboxIP.Text, 25555);
-            } catch(Exception ex)
-            {
+                log("connected!");
+                textboxIP.Enabled = false;
+                textboxIP.BackColor = System.Drawing.Color.Green;
+                buttonConnect.Enabled = false;
+                disconnectButton.Enabled = true;
+                disconnectButton.BackColor = System.Drawing.Color.Transparent;
+                enableCommands();
+            }
+            catch (Exception ex) {
                 log("Problem connecting: " + ex.Message);
                 return;
             }
-            log("connected!");
-            textboxIP.Enabled = false;
-            textboxIP.BackColor = Color.Green;
-            buttonConnect.Enabled = false;
-            disconnectButton.Enabled = true;
-            disconnectButton.BackColor = Color.Transparent;
         }
 
         private void saveConsoleLogsToolStripMenuItem_Click(object sender, EventArgs e) // save console contents to log file
@@ -101,59 +162,70 @@ namespace ControlStation
             a.Show();
         }
 
-        private void disconnectButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void disconnectButton_Click(object sender, EventArgs e) {
+            try {
                 socket.Close();
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 log("Error disconnecting: " + ex.Message);
                 return;
             }
             log("Successfully disconnected.");
             textboxIP.Enabled = true;
-            textboxIP.BackColor = Color.White;
+            textboxIP.BackColor = System.Drawing.Color.White;
             buttonConnect.Enabled = true;
             disconnectButton.Enabled = false;
-            disconnectButton.BackColor = Color.Silver;
+            disconnectButton.BackColor = System.Drawing.Color.Silver;
         }
 
         //################      HELPER FUNCTIONS      ##################\\
-        public void log(String s)
-        {
+        public void log(String s) {
             console.AppendText("\r\n" + GetTimestamp(DateTime.Now) + " " + s + "");
         }
-        public static String GetTimestamp(DateTime value)
-        {
+        public static String GetTimestamp(DateTime value) {
             return value.ToString("HH:mm:ss");
         }
-        public static String GetFilePathTimestamp(DateTime value)
-        {
+        public static String GetFilePathTimestamp(DateTime value) {
             return value.ToString("yyyyMMdd--HHmmss");
         }
-        public void send(String s)
-        {
+        public void send(String s) {
             socket.Send(System.Text.Encoding.UTF8.GetBytes(s));
         }
-        private void btn_MouseDown(object sender, MouseEventArgs e)
-        {
+        private void btn_MouseDown(object sender, MouseEventArgs e) {
             var btn = (FontAwesomeIcons.IconButton)sender;
-            btn.BackColor = Color.Gold;
-            switch(btn.Name)
-            {
+            btn.BackColor = System.Drawing.Color.Gold;
+            switch (btn.Name) {
                 case "goForward":
                     send("^");
+                    log("Sending ^");
                     break;
                 case "goBackward":
                     send("v");
+                    log("Sending v");
                     break;
                 case "turnCW":
                     send(">");
+                    log("Sending >");
                     break;
                 case "turnCCW":
                     send("<");
+                    log("Sending <");
+                    break;
+                case "lowerMining":
+                    send("L");
+                    log("Sending L");
+                    break;
+                case "doMining":
+                    send("M");
+                    log("Sending M");
+                    break;
+                case "raiseMining":
+                    send("R");
+                    log("Sending R");
+                    break;
+                case "doDump":
+                    send("D");
+                    log("Sending D");
                     break;
                 case "disconnectButton":
                     break;
@@ -161,17 +233,25 @@ namespace ControlStation
                     break;
             }
         }
-        private void btn_MouseUp(object sender, MouseEventArgs e)
-        {
+        private void btn_MouseUp(object sender, MouseEventArgs e) {
             var btn = (FontAwesomeIcons.IconButton)sender;
-            btn.BackColor = Color.Transparent;
-            send("*");
-            if (btn.Name == "disconnectButton") btn.BackColor = Color.Silver;
+            btn.BackColor = System.Drawing.Color.Transparent;
+            if (btn.Name == "disconnectButton") {
+                btn.BackColor = System.Drawing.Color.Silver;
+                disableCommands();
+            }
+            else send("*");
         }
-    }
-    public class ParticleResponse
-    {
-        public string name { get; set; }
-        public string result { get; set; }
+
+        private void enableCommands() {
+            transportGroup.Enabled = true;
+            miningGroup.Enabled = true;
+        }
+        private void disableCommands() {
+            transportGroup.Enabled = false;
+            miningGroup.Enabled = false;
+        }
+
+        
     }
 }
