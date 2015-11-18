@@ -6,7 +6,6 @@ using System.IO;
 using System.Net.Sockets;
 using SharpDX;
 using SharpDX.DirectInput;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace ControlStation {
@@ -64,6 +63,12 @@ namespace ControlStation {
             /// - Buttons11 = Right Stick
             /// - Buttons12 = PS Button
             /// 
+            /// - Right Stick: 
+            ///         (Y)                 (X)
+            ///     0     all up        0     all left
+            ///     32767 neutral       32767 neutral
+            ///     65535 all down      65535 all right
+            ///     
             /// - DPAD (PointOfViewControllers0) ::
             ///     0 = up
             ///     18000 = down
@@ -71,6 +76,8 @@ namespace ControlStation {
             ///     9000 = right
             ///     -1 = release
             ///
+
+            bool sent = false;
             while (true) {
                 joystick.Poll();
                 var datas = joystick.GetBufferedData();
@@ -78,11 +85,24 @@ namespace ControlStation {
                     String offset = state.Offset.ToString();
                     int value = int.Parse(state.Value.ToString());
                     log(offset + " " + value);
-                    
+
                     // end gamepad on share button
                     if (offset == "Buttons8" && value > 64) {
                         log("Share button pressed. Gamepad stopped.");
                         return;
+                    }
+
+
+                    if (offset == "Y" && value == 0 && !sent) { 
+                        send("^");
+                        log("Sending ^");
+                        sent = !sent;
+                    }
+
+                    if (offset == "Y" && value > 0 && sent) {
+                        send("*");
+                        log("Sending *");
+                        sent = !sent;
                     }
                 }
             }
@@ -135,8 +155,9 @@ namespace ControlStation {
             }
         }
 
-        private void saveConsoleLogsToolStripMenuItem_Click(object sender, EventArgs e) // save console contents to log file
+        private void saveConsoleLogsToolStripMenuItem_Click(object sender, EventArgs e) 
         {
+            // save console contents to log file
             saveFileDialog1.FileName = GetFilePathTimestamp(DateTime.Now) + "_ARES.log";
             saveFileDialog1.ShowDialog();
         }
