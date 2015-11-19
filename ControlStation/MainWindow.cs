@@ -1,20 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Net.Sockets;
-using SharpDX;
-using SharpDX.DirectInput;
 using System.Threading.Tasks;
 
 namespace ControlStation {
 
     public partial class MainWindow : Form {
-
-
+        
         Socket socket;
         DualShock4 ds4;
+        Byte[] incomingBuf = new Byte[1024];
         
         // start gamepad in a separate task
         private void gamepadButton_Click(object sender, EventArgs e) {
@@ -65,6 +62,12 @@ namespace ControlStation {
                 disconnectButton.Enabled = true;
                 disconnectButton.BackColor = System.Drawing.Color.Transparent;
                 enableCommands();
+                Task recv = Task.Run(() => {
+                    while (true) {
+                        socket.Receive(incomingBuf);
+                        log(System.Text.Encoding.UTF8.GetString(incomingBuf));
+                    }
+                });
             }
             catch (Exception ex) {
                 log("Problem connecting: " + ex.Message);
@@ -128,6 +131,7 @@ namespace ControlStation {
         }
         public void send(String s) {
             socket.Send(System.Text.Encoding.UTF8.GetBytes(s));
+            log("GUI: " + s);
         }
         private void btn_MouseDown(object sender, MouseEventArgs e) {
             var btn = (FontAwesomeIcons.IconButton)sender;
@@ -135,35 +139,27 @@ namespace ControlStation {
             switch (btn.Name) {
                 case "goForward":
                     send("^");
-                    log("Sending ^");
                     break;
                 case "goBackward":
                     send("v");
-                    log("Sending v");
                     break;
                 case "turnCW":
                     send(">");
-                    log("Sending >");
                     break;
                 case "turnCCW":
                     send("<");
-                    log("Sending <");
                     break;
                 case "lowerMining":
                     send("L");
-                    log("Sending L");
                     break;
                 case "doMining":
                     send("M");
-                    log("Sending M");
                     break;
                 case "raiseMining":
                     send("R");
-                    log("Sending R");
                     break;
                 case "doDump":
                     send("D");
-                    log("Sending D");
                     break;
                 case "disconnectButton":
                     break;

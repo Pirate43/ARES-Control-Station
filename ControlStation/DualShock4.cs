@@ -1,16 +1,14 @@
 ﻿using SharpDX.DirectInput;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ControlStation {
     class DualShock4 {
 
         MainWindow mw;
         int rStickX = 0;
+        int rStickY = 0;
+        int rTrigger = 0;
+        int lTrigger = 0;
         
         // constructor
         public DualShock4(MainWindow mainWind) {
@@ -39,15 +37,28 @@ namespace ControlStation {
             else throw new Exception("bad stick value (DualShock4.cs)");
         }
 
+        private int normalizeTrigger(int value) {
+            if (value > 60000) return 5;
+            else if (value <= 60000 && value > 50000) return 4;
+            else if (value <= 50000 && value > 40000) return 3;
+            else if (value <= 40000 && value > 30000) return 2;
+            else if (value <= 30000 && value > 20000) return 1;
+            else if (value <= 20000) return 0;
+            else throw new Exception("bad trigger value (DualShock4.cs)");
+        }
+
         public void gamepad() {
             var dInput = new DirectInput(); // Initialize DirectInput
             var joystickGuid = Guid.Empty;  // Find a Joystick Guid
             foreach (var deviceInstance in dInput.GetDevices(DeviceType.Gamepad,
-                    DeviceEnumerationFlags.AllDevices))
+                    DeviceEnumerationFlags.AllDevices)) {
+                mw.log("deviceInstance " + deviceInstance.InstanceName);
                 joystickGuid = deviceInstance.InstanceGuid;
+            }
             // If Joystick not found, log to console.
             if (joystickGuid == Guid.Empty) {
                 mw.log("Error: No joystick or Gamepad found.");
+                return;
             }
 
             // Instantiate the joystick
@@ -99,8 +110,7 @@ namespace ControlStation {
             ///     9000 = right
             ///     -1 = release
             ///
-
-            bool sent = false;
+            
             while (true) {
                 joystick.Poll();
                 var datas = joystick.GetBufferedData();
@@ -108,19 +118,50 @@ namespace ControlStation {
                     String offset = state.Offset.ToString();
                     int value = int.Parse(state.Value.ToString());
                     //mw.log(offset + " " + value); //LOG EVERYTHING
-                    
-                    if (offset == "X") {
+
+                    if (offset == "X") { // left stick X
                         value = normalizeStick(value);
-                        if(value != rStickX) {
+                        if (value != rStickX) {
                             mw.log(offset + " " + value);
                             rStickX = value;
                         }
                     }
-
-
-
-                    // end gamepad on share button
-                    if (offset == "Buttons8" && value > 64) {
+                    else if (offset == "Y") {
+                        value = normalizeStick(value); // left stick Y
+                        if (value != rStickY) {
+                            mw.log(offset + " " + value);
+                            rStickY = value;
+                        }
+                    }
+                    else if (offset == "RotationY") { // right trigger
+                        value = normalizeTrigger(value);
+                        if(value != rTrigger) {
+                            mw.log("Right Trigger " + value);
+                            rTrigger = value;
+                            mw.send("^ " + rTrigger); 
+                        }
+                    }
+                    else if (offset == "RotationX") { // left trigger
+                        value = normalizeTrigger(value);
+                        if (value != rTrigger) {
+                            mw.log("Left Trigger " + value);
+                            rTrigger = value;
+                        }
+                    }
+                    else if (offset == "Buttons0") { // square
+                        mw.log("■ button: " + normalizeButton(value));
+                    }
+                    else if (offset == "Buttons1") { // X
+                        mw.log("X button: " + normalizeButton(value));
+                    }
+                    else if (offset == "Buttons2") { // O
+                        mw.log("O button: " + normalizeButton(value));
+                    }
+                    else if (offset == "Buttons3") { // triangle
+                        mw.log("▲ button: " + normalizeButton(value));
+                    }
+                    else if (offset == "Buttons8" && value > 64) { 
+                        // end gamepad on share button
                         mw.log("Share button pressed. Gamepad stopped.");
                         return;
                     }
@@ -128,6 +169,10 @@ namespace ControlStation {
 
 
 
+
+
+
+                    /*
                     if (offset == "Y" && value == 0 && !sent) {
                         mw.send("^");
                         mw.log("Sending ^");
@@ -138,7 +183,7 @@ namespace ControlStation {
                         mw.send("*");
                         mw.log("Sending *");
                         sent = !sent;
-                    }
+                    }*/
                 }
             }
         }
