@@ -338,7 +338,7 @@ namespace FontAwesomeIcons
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // log?
             }

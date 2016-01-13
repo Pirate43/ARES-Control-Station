@@ -52,7 +52,7 @@ namespace ControlStation {
         private void buttonConnect_Click(object sender, EventArgs e) {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             log("Connecting to " + textboxIP.Text + "..");
-            batteryBar.PerformStep();
+            batteryBar.PerformStep(); // TODO relate to battery voltage
             try {
                 socket.Connect(textboxIP.Text, 25555);
                 log("connected!");

@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                socket.Dispose();
             }
             base.Dispose(disposing);
         }
