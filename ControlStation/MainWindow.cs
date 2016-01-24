@@ -11,7 +11,7 @@ namespace ControlStation {
         
         Socket socket;
         DualShock4 ds4;
-        Byte[] incomingBuf = new Byte[1024];
+        Byte[] incomingBuf = new Byte[256];
         
         // start gamepad in a separate task
         private void gamepadButton_Click(object sender, EventArgs e) {
@@ -38,17 +38,14 @@ namespace ControlStation {
             
         }
 
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e) // exit app
-        {
+        #region Exit App
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) { // exit app
             Application.Exit();
         }
-
-        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e) // exit app
-        {
+        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e) { // exit app
             Application.Exit();
         }
-
+        #endregion
         private void buttonConnect_Click(object sender, EventArgs e) {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             log("Connecting to " + textboxIP.Text + "..");
@@ -65,7 +62,21 @@ namespace ControlStation {
                 Task recv = Task.Run(() => {
                     while (true) {
                         socket.Receive(incomingBuf);
-                        log(System.Text.Encoding.UTF8.GetString(incomingBuf));
+                        log("Robot: " + System.Text.Encoding.UTF8.GetString(incomingBuf));
+                        var str = System.Text.Encoding.Default.GetString(incomingBuf);
+                        if (str.Substring(0, 4).Equals("BATT")) {
+                            str = str.Substring(5);
+                            int batt = int.Parse(str);
+                            batteryBar.Value = batt;
+                            battPercent.Text = batt + "%";
+                        }
+                        incomingBuf = new Byte[256];
+                    }
+                });
+                Task battrecv = Task.Run(async () => { // receive battery on interval
+                    while (true) {
+                        await Task.Delay(15000);
+                        send("b");
                     }
                 });
             }
@@ -74,8 +85,8 @@ namespace ControlStation {
                 return;
             }
         }
-
-        private void saveConsoleLogsToolStripMenuItem_Click(object sender, EventArgs e) 
+        #region About / Save Logs functionality
+        private void saveConsoleLogsToolStripMenuItem_Click(object sender, EventArgs e) // show save dialog
         {
             // save console contents to log file
             saveFileDialog1.FileName = GetFilePathTimestamp(DateTime.Now) + "_ARES.log";
@@ -102,21 +113,31 @@ namespace ControlStation {
             AboutBox a = new AboutBox();
             a.Show();
         }
-
+        #endregion
         private void disconnectButton_Click(object sender, EventArgs e) {
             try {
                 socket.Close();
+                log("Successfully disconnected.");
+                ds4 = null;
+                log("Gamepad wiped");
             }
             catch (Exception ex) {
-                log("Error disconnecting: " + ex.Message);
+                log("Error in disconnection function: " + ex.Message);
                 return;
             }
-            log("Successfully disconnected.");
+            
             textboxIP.Enabled = true;
             textboxIP.BackColor = System.Drawing.Color.White;
             buttonConnect.Enabled = true;
             disconnectButton.Enabled = false;
             disconnectButton.BackColor = System.Drawing.Color.Silver;
+        }
+
+        private void sendCustomCommand(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == (char)Keys.Return) {
+                send(txtCustomCommand.Text);
+                txtCustomCommand.Text = "";
+            }
         }
 
         //################      HELPER FUNCTIONS      ##################\\
@@ -164,6 +185,8 @@ namespace ControlStation {
                 case "disconnectButton":
                     break;
                 default:
+                    MessageBox.Show("Unrecognized button");
+                    log("Unrecognized button.");
                     break;
             }
         }
@@ -185,7 +208,6 @@ namespace ControlStation {
             transportGroup.Enabled = false;
             miningGroup.Enabled = false;
         }
-
 
         
     }

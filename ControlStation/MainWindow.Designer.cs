@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                socket.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -57,9 +58,12 @@
             this.batteryBar = new System.Windows.Forms.ToolStripProgressBar();
             this.disconnectButton = new FontAwesomeIcons.IconButton();
             this.miscGroup = new System.Windows.Forms.GroupBox();
-            this.lblDisconnect = new System.Windows.Forms.Label();
-            this.gamepadButton = new FontAwesomeIcons.IconButton();
             this.lblGamepad = new System.Windows.Forms.Label();
+            this.gamepadButton = new FontAwesomeIcons.IconButton();
+            this.lblDisconnect = new System.Windows.Forms.Label();
+            this.txtCustomCommand = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.battPercent = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.transportGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).BeginInit();
@@ -351,8 +355,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.batteryBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 464);
+            this.batteryBar,
+            this.battPercent});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 488);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(784, 22);
             this.statusStrip1.TabIndex = 15;
@@ -402,14 +407,14 @@
             this.miscGroup.TabStop = false;
             this.miscGroup.Text = "Misc Actions";
             // 
-            // lblDisconnect
+            // lblGamepad
             // 
-            this.lblDisconnect.AutoSize = true;
-            this.lblDisconnect.Location = new System.Drawing.Point(17, 62);
-            this.lblDisconnect.Name = "lblDisconnect";
-            this.lblDisconnect.Size = new System.Drawing.Size(24, 13);
-            this.lblDisconnect.TabIndex = 16;
-            this.lblDisconnect.Text = "d/c";
+            this.lblGamepad.AutoSize = true;
+            this.lblGamepad.Location = new System.Drawing.Point(49, 62);
+            this.lblGamepad.Name = "lblGamepad";
+            this.lblGamepad.Size = new System.Drawing.Size(53, 13);
+            this.lblGamepad.TabIndex = 18;
+            this.lblGamepad.Text = "Gamepad";
             // 
             // gamepadButton
             // 
@@ -427,21 +432,45 @@
             this.gamepadButton.ToolTipText = null;
             this.gamepadButton.Click += new System.EventHandler(this.gamepadButton_Click);
             // 
-            // lblGamepad
+            // lblDisconnect
             // 
-            this.lblGamepad.AutoSize = true;
-            this.lblGamepad.Location = new System.Drawing.Point(49, 62);
-            this.lblGamepad.Name = "lblGamepad";
-            this.lblGamepad.Size = new System.Drawing.Size(53, 13);
-            this.lblGamepad.TabIndex = 18;
-            this.lblGamepad.Text = "Gamepad";
+            this.lblDisconnect.AutoSize = true;
+            this.lblDisconnect.Location = new System.Drawing.Point(17, 62);
+            this.lblDisconnect.Name = "lblDisconnect";
+            this.lblDisconnect.Size = new System.Drawing.Size(24, 13);
+            this.lblDisconnect.TabIndex = 16;
+            this.lblDisconnect.Text = "d/c";
+            // 
+            // txtCustomCommand
+            // 
+            this.txtCustomCommand.Location = new System.Drawing.Point(353, 460);
+            this.txtCustomCommand.Name = "txtCustomCommand";
+            this.txtCustomCommand.Size = new System.Drawing.Size(419, 20);
+            this.txtCustomCommand.TabIndex = 18;
+            this.txtCustomCommand.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sendCustomCommand);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(258, 463);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(94, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Custom command:";
+            // 
+            // battPercent
+            // 
+            this.battPercent.Name = "battPercent";
+            this.battPercent.Size = new System.Drawing.Size(0, 17);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(784, 486);
+            this.ClientSize = new System.Drawing.Size(784, 510);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtCustomCommand);
             this.Controls.Add(this.miscGroup);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.miningGroup);
@@ -454,6 +483,8 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximumSize = new System.Drawing.Size(800, 549);
+            this.MinimumSize = new System.Drawing.Size(800, 549);
             this.Name = "MainWindow";
             this.Text = "ARES Control Station";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
@@ -513,6 +544,9 @@
         private System.Windows.Forms.Label lblDisconnect;
         private FontAwesomeIcons.IconButton gamepadButton;
         private System.Windows.Forms.Label lblGamepad;
+        private System.Windows.Forms.TextBox txtCustomCommand;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripStatusLabel battPercent;
     }
 }
 
