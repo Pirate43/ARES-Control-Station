@@ -143,9 +143,9 @@ namespace ControlStation {
                     }
                     else if (offset == "RotationX") { // left trigger
                         value = normalizeTrigger(value);
-                        if (value != rTrigger) {
+                        if (value != lTrigger) {
                             mw.log("Left Trigger " + value);
-                            rTrigger = value;
+                            lTrigger = value;
                         }
                     }
                     else if (offset == "Buttons0") { // square
