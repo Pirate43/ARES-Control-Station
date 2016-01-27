@@ -160,6 +160,7 @@ namespace ControlStation {
                     else if (offset == "Buttons3") { // triangle
                         mw.log("▲ button: " + normalizeButton(value));
                     }
+                    // TODO : L1 / R1 + DPAD
                     else if (offset == "Buttons8" && value > 64) { 
                         // end gamepad on share button
                         mw.log("Share button pressed. Gamepad stopped.");

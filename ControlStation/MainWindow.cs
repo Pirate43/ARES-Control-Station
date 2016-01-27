@@ -12,6 +12,8 @@ namespace ControlStation {
         Socket socket;
         DualShock4 ds4;
         Byte[] incomingBuf = new Byte[256];
+        Task recv, battrecv;
+        bool doDisconnect = false;
         
         // start gamepad in a separate task
         private void gamepadButton_Click(object sender, EventArgs e) {
@@ -47,6 +49,7 @@ namespace ControlStation {
         }
         #endregion
         private void buttonConnect_Click(object sender, EventArgs e) {
+            doDisconnect = false;
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             log("Connecting to " + textboxIP.Text + "..");
             batteryBar.PerformStep(); // TODO relate to battery voltage
@@ -59,8 +62,10 @@ namespace ControlStation {
                 disconnectButton.Enabled = true;
                 disconnectButton.BackColor = System.Drawing.Color.Transparent;
                 enableCommands();
-                Task recv = Task.Run(() => {
+                recv = Task.Run(() => {
                     while (true) {
+                        if (doDisconnect) break;
+                        if (!isConnected(socket)) disconnectButton_Click(null, null); 
                         socket.Receive(incomingBuf);
                         log("Robot: " + System.Text.Encoding.UTF8.GetString(incomingBuf));
                         var str = System.Text.Encoding.Default.GetString(incomingBuf);
@@ -73,10 +78,11 @@ namespace ControlStation {
                         incomingBuf = new Byte[256];
                     }
                 });
-                Task battrecv = Task.Run(async () => { // receive battery on interval
+                battrecv = Task.Run(async () => { // receive battery on interval
                     while (true) {
-                        await Task.Delay(15000);
+                        if (doDisconnect) break;
                         send("b");
+                        await Task.Delay(10000);
                     }
                 });
             }
@@ -116,10 +122,13 @@ namespace ControlStation {
         #endregion
         private void disconnectButton_Click(object sender, EventArgs e) {
             try {
+                doDisconnect = true;
                 socket.Close();
                 log("Successfully disconnected.");
                 ds4 = null;
                 log("Gamepad wiped");
+                recv.Dispose();
+                battrecv.Dispose();
             }
             catch (Exception ex) {
                 log("Error in disconnection function: " + ex.Message);
@@ -209,6 +218,13 @@ namespace ControlStation {
             miningGroup.Enabled = false;
         }
 
-        
+        public static bool isConnected(Socket socket) {
+            try
+            {
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException) { return false; }
+        }
+
     }
 }
