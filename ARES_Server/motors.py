@@ -11,15 +11,16 @@ LEVEL4 = 235
 LEVEL5 = 254
 
 # Wiring constants (these should be PWM pins on the Arduino)
-PIN_FR = 5 #Fronts might be backwards
+PIN_FR = 5
 PIN_FL = 7
-PIN_RR = 10 #Rears might be backwards
+PIN_RR = 10
 PIN_RL = 8
 PIN_ACT_R = 0
 PIN_ACT_L = 0
 
 # Open our serial connection
 sp = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=2)
+
 
 def go_fwd(speed):  # spin all 4 motors forward
     if not speed:

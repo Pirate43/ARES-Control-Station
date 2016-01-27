@@ -6,8 +6,6 @@ import random
 # import serial
 
 
-# WIRING: Currently expects a motor's ESC at port 11
-
 def log(sock, sock_message):
     sock_message = sock_message.encode()
     sock.send(sock_message)
@@ -16,14 +14,10 @@ def log(sock, sock_message):
 # socket settings
 TCP_IP = '0.0.0.0'
 TCP_PORT = 25555
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 64
 packet_size = 4
 
 print("Python version: " + sys.version)
-
-# open our serial connection
-# sp = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=2)
-ardcmd = "a,11,190;"
 
 # create and ready our socket with its settings
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
