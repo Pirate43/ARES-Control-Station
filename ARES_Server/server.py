@@ -35,7 +35,7 @@ print("Connection address: ", addr)
 while 1:
     try:
         data = conn.recv(BUFFER_SIZE)
-    except ConnectionResetError:
+    except:
         print("Client disconnected. Awaiting connection...")
         conn, addr = s.accept()  # wait here until a new connection.
         print("Connection address: ", addr)
