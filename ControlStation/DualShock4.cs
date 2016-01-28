@@ -1,5 +1,6 @@
 ﻿using SharpDX.DirectInput;
 using System;
+using System.Threading;
 
 namespace ControlStation {
     class DualShock4 {
@@ -156,6 +157,7 @@ namespace ControlStation {
                     }
                     else if (offset == "Buttons2") { // O
                         mw.log("O button: " + normalizeButton(value));
+                        mw.send("*");
                     }
                     else if (offset == "Buttons3") { // triangle
                         mw.log("▲ button: " + normalizeButton(value));
@@ -169,8 +171,7 @@ namespace ControlStation {
 
 
 
-
-
+                    
 
 
                     /*

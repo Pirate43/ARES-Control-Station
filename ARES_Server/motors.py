@@ -24,6 +24,7 @@ def go_fwd(speed):  # spin all 4 motors forward
         sp.write(bytes("a," + str(PIN_RL) + ",200;", 'UTF-8'))
         return "GO FWD - (no speed set)"
     else:
+        speed *= -1
         sp.write(bytes("a,"+str(PIN_FR)+","+str(level2motor(speed))+";", 'UTF-8'))
         sp.write(bytes("a,"+str(PIN_FL)+","+str(level2motor(speed))+";", 'UTF-8'))
         sp.write(bytes("a,"+str(PIN_RR)+","+str(level2motor(speed))+";", 'UTF-8'))
