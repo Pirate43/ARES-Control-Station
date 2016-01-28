@@ -129,17 +129,17 @@ namespace ControlStation {
                 log("Gamepad wiped");
                 recv.Dispose();
                 battrecv.Dispose();
+
+                textboxIP.Enabled = true;
+                textboxIP.BackColor = System.Drawing.Color.White;
+                buttonConnect.Enabled = true;
+                disconnectButton.Enabled = false;
+                disconnectButton.BackColor = System.Drawing.Color.Silver;
             }
             catch (Exception ex) {
                 log("Error in disconnection function: " + ex.Message);
                 return;
             }
-            
-            textboxIP.Enabled = true;
-            textboxIP.BackColor = System.Drawing.Color.White;
-            buttonConnect.Enabled = true;
-            disconnectButton.Enabled = false;
-            disconnectButton.BackColor = System.Drawing.Color.Silver;
         }
 
         private void sendCustomCommand(object sender, KeyPressEventArgs e) {

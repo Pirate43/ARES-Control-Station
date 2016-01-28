@@ -58,7 +58,7 @@ while 1:
 
         elif data[0] == 'v':  # BWD
             data = data[2:]
-            if data and isinstance(int(data), int) and 0 > int(data) >= -5:
+            if data and isinstance(int(data), int) and 0 < int(data) <= 5:
                 log(conn, motors.go_bwd(int(data)))
             elif data == 0:
                 log(conn, motors.halt_motors())
