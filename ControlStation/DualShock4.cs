@@ -147,6 +147,7 @@ namespace ControlStation {
                         if (value != lTrigger) {
                             mw.log("Left Trigger " + value);
                             lTrigger = value;
+                            mw.send("v " + lTrigger);
                         }
                     }
                     else if (offset == "Buttons0") { // square
