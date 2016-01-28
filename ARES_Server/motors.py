@@ -39,7 +39,7 @@ def go_bwd(speed):  # spin all 4 motors backward
         sp.write(bytes("a," + str(PIN_RL) + ",180;", 'UTF-8'))
         return "GO BWD - (no speed set)"
     else:
-        speed *= 1
+        speed *= -1
         sp.write(bytes("a,"+str(PIN_FR)+","+str(level2motor(speed))+";", 'UTF-8'))
         sp.write(bytes("a,"+str(PIN_FL)+","+str(level2motor(speed))+";", 'UTF-8'))
         sp.write(bytes("a,"+str(PIN_RR)+","+str(level2motor(speed))+";", 'UTF-8'))
