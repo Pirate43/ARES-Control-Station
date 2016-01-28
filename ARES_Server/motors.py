@@ -4,12 +4,6 @@ import serial
 # 186~190 - neutral
 # 191~254 - forward
 
-LEVEL1 = 200
-LEVEL2 = 210
-LEVEL3 = 220
-LEVEL4 = 235
-LEVEL5 = 254
-
 # Wiring constants (these should be PWM pins on the Arduino)
 PIN_FR = 5
 PIN_FL = 7
@@ -23,28 +17,36 @@ sp = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=2)
 
 
 def go_fwd(speed):  # spin all 4 motors forward
-    if not speed:
+    if not speed:  # no speed, spin at LEVEL 1
         sp.write(bytes("a," + str(PIN_FR) + ",200;", 'UTF-8'))
         sp.write(bytes("a," + str(PIN_FL) + ",200;", 'UTF-8'))
         sp.write(bytes("a," + str(PIN_RR) + ",200;", 'UTF-8'))
         sp.write(bytes("a," + str(PIN_RL) + ",200;", 'UTF-8'))
         return "GO FWD - (no speed set)"
     else:
-        sp.write(bytes("a,"+str(PIN_FR)+","+str(level2motor(speed))+";",'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_FL)+","+str(level2motor(speed))+";",'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_RR)+","+str(level2motor(speed))+";",'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_RL)+","+str(level2motor(speed))+";",'UTF-8'))
+        sp.write(bytes("a,"+str(PIN_FR)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a,"+str(PIN_FL)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a,"+str(PIN_RR)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a,"+str(PIN_RL)+","+str(level2motor(speed))+";", 'UTF-8'))
         return "GO FWD " + str(level2motor(speed))
 
 
 def go_bwd(speed):  # spin all 4 motors backward
-    if not speed:
+    if not speed:  # no speed, spin at LEVEL -1
+        sp.write(bytes("a," + str(PIN_FR) + ",180;", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_FL) + ",180;", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_RR) + ",180;", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_RL) + ",180;", 'UTF-8'))
         return "GO BWD - (no speed set)"
     else:
+        sp.write(bytes("a,"+str(PIN_FR)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a,"+str(PIN_FL)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a,"+str(PIN_RR)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a,"+str(PIN_RL)+","+str(level2motor(speed))+";", 'UTF-8'))
         return "GO BWD " + str(level2motor(speed))
 
 
-def halt_motors(): # stop all 4 motors
+def halt_motors():  # stop all 4 motors
     sp.write(bytes("a," + str(PIN_FR) + ",190;", 'UTF-8'))
     sp.write(bytes("a," + str(PIN_FL) + ",190;", 'UTF-8'))
     sp.write(bytes("a," + str(PIN_RR) + ",190;", 'UTF-8'))
@@ -72,7 +74,7 @@ def lower_bot(): # EXTEND both actuators
     return "LOWER CHASSIS"
 
 
-def level2motor(level):
+def level2motor(level):  # helper function to turn level to motor speed
     levels = {
         -5: 125,  # LEVEL -5
         -4: 135,  # LEVEL -4

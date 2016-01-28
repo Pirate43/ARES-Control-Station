@@ -11,7 +11,7 @@ namespace ControlStation {
         
         Socket socket;
         DualShock4 ds4;
-        Byte[] incomingBuf = new Byte[256];
+        Byte[] incomingBuf = new Byte[16];
         Task recv, battrecv;
         bool doDisconnect = false;
         
