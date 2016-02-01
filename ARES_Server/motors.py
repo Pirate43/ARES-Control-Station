@@ -13,7 +13,7 @@ PIN_ACT_R = 0
 PIN_ACT_L = 0
 
 # Open our serial connection
-sp = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=2)
+sp = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=2)
 
 
 def go_fwd(speed):  # spin all 4 motors forward
