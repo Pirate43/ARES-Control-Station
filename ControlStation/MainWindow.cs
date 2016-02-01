@@ -35,7 +35,7 @@ namespace ControlStation {
             InitializeComponent();
             this.Visible = true;
             this.Focus();
-            textboxIP.Text = "raspberrypi";
+            textboxIP.Text = "pmc43.ddns.net";
             console.Text = GetTimestamp(DateTime.Now) + " initialized.";
             
         }
@@ -216,6 +216,19 @@ namespace ControlStation {
         private void disableCommands() {
             transportGroup.Enabled = false;
             miningGroup.Enabled = false;
+        }
+
+        private void raiseBot_mouseDown(object sender, MouseEventArgs e) {
+            send("u");
+        }
+        private void raiseBot_mouseUp(object sender, MouseEventArgs e) {
+            send("y");
+        }
+        private void lowerBot_mouseDown(object sender, MouseEventArgs e) {
+            send("t");
+        }
+        private void lowerBot_mouseUp(object sender, MouseEventArgs e) {
+            raiseBot_mouseUp(sender, e);
         }
 
         public static bool isConnected(Socket socket) {

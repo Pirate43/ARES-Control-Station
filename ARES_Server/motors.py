@@ -1,16 +1,23 @@
 import serial
+
 # motor values
 # 125~185 - reverse
 # 186~190 - neutral
 # 191~254 - forward
+
+# actuator values
+# LOW,240 - extend
+# HIGH,60 0 retract
 
 # Wiring constants (these should be PWM pins on the Arduino)
 PIN_FR = 5
 PIN_FL = 7
 PIN_RR = 10
 PIN_RL = 8
-PIN_ACT_R = 0
-PIN_ACT_L = 0
+PIN_ACT_R_DIR = 22
+PIN_ACT_R_SPD = 2
+PIN_ACT_L_DIR = 23
+PIN_ACT_L_SPD = 3
 
 # Open our serial connection
 sp = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=2)
@@ -68,10 +75,17 @@ def turn_ccw():  # single set speed
 
 
 def raise_bot(): # RETRACT both actuators
+    sp.write(bytes("u,0,0;", 'UTF-8'))
     return "RAISE CHASSIS"
 
 
-def lower_bot(): # EXTEND both actuators
+def stop_actuators():  # STOP both actuators
+    sp.write(bytes("y,0,0;", 'UTF-8'))
+    return "ACTUATORS STOPPED"
+
+
+def lower_bot():  # EXTEND both actuators
+    sp.write(bytes("t,0,0;", 'UTF-8'))
     return "LOWER CHASSIS"
 
 

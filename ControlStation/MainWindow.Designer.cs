@@ -43,10 +43,15 @@
             this.labelConsole = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.transportGroup = new System.Windows.Forms.GroupBox();
+            this.lblLowerBot = new System.Windows.Forms.Label();
+            this.lblRaiseBot = new System.Windows.Forms.Label();
             this.goBackward = new FontAwesomeIcons.IconButton();
             this.turnCW = new FontAwesomeIcons.IconButton();
             this.goForward = new FontAwesomeIcons.IconButton();
             this.turnCCW = new FontAwesomeIcons.IconButton();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.lowerBot = new FontAwesomeIcons.IconButton();
+            this.raiseBot = new FontAwesomeIcons.IconButton();
             this.miningGroup = new System.Windows.Forms.GroupBox();
             this.labelDescriptions = new System.Windows.Forms.Label();
             this.doDump = new FontAwesomeIcons.IconButton();
@@ -56,6 +61,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.batteryBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.battPercent = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblBatVolt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblSigStrength = new System.Windows.Forms.ToolStripStatusLabel();
+            this.progSigStrength = new System.Windows.Forms.ToolStripProgressBar();
             this.disconnectButton = new FontAwesomeIcons.IconButton();
             this.miscGroup = new System.Windows.Forms.GroupBox();
             this.lblGamepad = new System.Windows.Forms.Label();
@@ -63,13 +72,14 @@
             this.lblDisconnect = new System.Windows.Forms.Label();
             this.txtCustomCommand = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.battPercent = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.transportGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnCW)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.goForward)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnCCW)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lowerBot)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.raiseBot)).BeginInit();
             this.miningGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.doDump)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.raiseMining)).BeginInit();
@@ -162,6 +172,7 @@
             this.console.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.console.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.console.Location = new System.Drawing.Point(261, 51);
+            this.console.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.console.MaxLength = 99999;
             this.console.Multiline = true;
             this.console.Name = "console";
@@ -187,10 +198,15 @@
             // 
             // transportGroup
             // 
+            this.transportGroup.Controls.Add(this.lblLowerBot);
+            this.transportGroup.Controls.Add(this.lblRaiseBot);
             this.transportGroup.Controls.Add(this.goBackward);
             this.transportGroup.Controls.Add(this.turnCW);
             this.transportGroup.Controls.Add(this.goForward);
             this.transportGroup.Controls.Add(this.turnCCW);
+            this.transportGroup.Controls.Add(this.splitter1);
+            this.transportGroup.Controls.Add(this.lowerBot);
+            this.transportGroup.Controls.Add(this.raiseBot);
             this.transportGroup.Enabled = false;
             this.transportGroup.Location = new System.Drawing.Point(8, 60);
             this.transportGroup.Name = "transportGroup";
@@ -199,6 +215,24 @@
             this.transportGroup.TabStop = false;
             this.transportGroup.Text = "Transport";
             // 
+            // lblLowerBot
+            // 
+            this.lblLowerBot.AutoSize = true;
+            this.lblLowerBot.Location = new System.Drawing.Point(184, 115);
+            this.lblLowerBot.Name = "lblLowerBot";
+            this.lblLowerBot.Size = new System.Drawing.Size(36, 13);
+            this.lblLowerBot.TabIndex = 20;
+            this.lblLowerBot.Text = "Lower";
+            // 
+            // lblRaiseBot
+            // 
+            this.lblRaiseBot.AutoSize = true;
+            this.lblRaiseBot.Location = new System.Drawing.Point(184, 12);
+            this.lblRaiseBot.Name = "lblRaiseBot";
+            this.lblRaiseBot.Size = new System.Drawing.Size(34, 13);
+            this.lblRaiseBot.TabIndex = 16;
+            this.lblRaiseBot.Text = "Raise";
+            // 
             // goBackward
             // 
             this.goBackward.ActiveColor = System.Drawing.Color.Black;
@@ -206,14 +240,12 @@
             this.goBackward.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.goBackward.IconType = FontAwesomeIcons.IconType.ArrowDown;
             this.goBackward.InActiveColor = System.Drawing.Color.DimGray;
-            this.goBackward.Location = new System.Drawing.Point(56, 79);
+            this.goBackward.Location = new System.Drawing.Point(57, 83);
             this.goBackward.Name = "goBackward";
             this.goBackward.Size = new System.Drawing.Size(39, 44);
-            this.goBackward.TabIndex = 12;
+            this.goBackward.TabIndex = 19;
             this.goBackward.TabStop = false;
             this.goBackward.ToolTipText = null;
-            this.goBackward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
-            this.goBackward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // turnCW
             // 
@@ -222,14 +254,12 @@
             this.turnCW.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.turnCW.IconType = FontAwesomeIcons.IconType.Repeat;
             this.turnCW.InActiveColor = System.Drawing.Color.DimGray;
-            this.turnCW.Location = new System.Drawing.Point(101, 45);
+            this.turnCW.Location = new System.Drawing.Point(102, 49);
             this.turnCW.Name = "turnCW";
             this.turnCW.Size = new System.Drawing.Size(39, 44);
-            this.turnCW.TabIndex = 9;
+            this.turnCW.TabIndex = 16;
             this.turnCW.TabStop = false;
             this.turnCW.ToolTipText = null;
-            this.turnCW.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
-            this.turnCW.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // goForward
             // 
@@ -238,14 +268,12 @@
             this.goForward.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.goForward.IconType = FontAwesomeIcons.IconType.ArrowUp;
             this.goForward.InActiveColor = System.Drawing.Color.DimGray;
-            this.goForward.Location = new System.Drawing.Point(56, 15);
+            this.goForward.Location = new System.Drawing.Point(57, 19);
             this.goForward.Name = "goForward";
             this.goForward.Size = new System.Drawing.Size(39, 44);
-            this.goForward.TabIndex = 11;
+            this.goForward.TabIndex = 18;
             this.goForward.TabStop = false;
             this.goForward.ToolTipText = null;
-            this.goForward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
-            this.goForward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // turnCCW
             // 
@@ -254,14 +282,52 @@
             this.turnCCW.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.turnCCW.IconType = FontAwesomeIcons.IconType.RotateLeft;
             this.turnCCW.InActiveColor = System.Drawing.Color.DimGray;
-            this.turnCCW.Location = new System.Drawing.Point(10, 45);
+            this.turnCCW.Location = new System.Drawing.Point(11, 49);
             this.turnCCW.Name = "turnCCW";
             this.turnCCW.Size = new System.Drawing.Size(39, 44);
-            this.turnCCW.TabIndex = 10;
+            this.turnCCW.TabIndex = 17;
             this.turnCCW.TabStop = false;
             this.turnCCW.ToolTipText = null;
-            this.turnCCW.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
-            this.turnCCW.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
+            // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(3, 16);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(148, 113);
+            this.splitter1.TabIndex = 15;
+            this.splitter1.TabStop = false;
+            // 
+            // lowerBot
+            // 
+            this.lowerBot.ActiveColor = System.Drawing.Color.Black;
+            this.lowerBot.BackColor = System.Drawing.Color.Transparent;
+            this.lowerBot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lowerBot.IconType = FontAwesomeIcons.IconType.ArrowCircleODown;
+            this.lowerBot.InActiveColor = System.Drawing.Color.DimGray;
+            this.lowerBot.Location = new System.Drawing.Point(182, 71);
+            this.lowerBot.Name = "lowerBot";
+            this.lowerBot.Size = new System.Drawing.Size(39, 44);
+            this.lowerBot.TabIndex = 14;
+            this.lowerBot.TabStop = false;
+            this.lowerBot.ToolTipText = null;
+            this.lowerBot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lowerBot_mouseDown);
+            this.lowerBot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lowerBot_mouseUp);
+            // 
+            // raiseBot
+            // 
+            this.raiseBot.ActiveColor = System.Drawing.Color.Black;
+            this.raiseBot.BackColor = System.Drawing.Color.Transparent;
+            this.raiseBot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.raiseBot.IconType = FontAwesomeIcons.IconType.ArrowCircleOUp;
+            this.raiseBot.InActiveColor = System.Drawing.Color.DimGray;
+            this.raiseBot.Location = new System.Drawing.Point(182, 26);
+            this.raiseBot.Name = "raiseBot";
+            this.raiseBot.Size = new System.Drawing.Size(39, 44);
+            this.raiseBot.TabIndex = 13;
+            this.raiseBot.TabStop = false;
+            this.raiseBot.ToolTipText = null;
+            this.raiseBot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.raiseBot_mouseDown);
+            this.raiseBot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.raiseBot_mouseUp);
             // 
             // miningGroup
             // 
@@ -356,7 +422,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.batteryBar,
-            this.battPercent});
+            this.battPercent,
+            this.lblBatVolt,
+            this.lblSigStrength,
+            this.progSigStrength});
             this.statusStrip1.Location = new System.Drawing.Point(0, 488);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(784, 22);
@@ -375,6 +444,30 @@
             this.batteryBar.Size = new System.Drawing.Size(100, 16);
             this.batteryBar.Step = -1;
             this.batteryBar.Value = 100;
+            // 
+            // battPercent
+            // 
+            this.battPercent.Name = "battPercent";
+            this.battPercent.Size = new System.Drawing.Size(0, 17);
+            // 
+            // lblBatVolt
+            // 
+            this.lblBatVolt.Name = "lblBatVolt";
+            this.lblBatVolt.Size = new System.Drawing.Size(18, 17);
+            this.lblBatVolt.Text = "-v";
+            // 
+            // lblSigStrength
+            // 
+            this.lblSigStrength.Margin = new System.Windows.Forms.Padding(50, 3, 0, 2);
+            this.lblSigStrength.Name = "lblSigStrength";
+            this.lblSigStrength.Size = new System.Drawing.Size(87, 17);
+            this.lblSigStrength.Text = "Signal Strength";
+            // 
+            // progSigStrength
+            // 
+            this.progSigStrength.Name = "progSigStrength";
+            this.progSigStrength.Size = new System.Drawing.Size(100, 16);
+            this.progSigStrength.Value = 100;
             // 
             // disconnectButton
             // 
@@ -458,11 +551,6 @@
             this.label1.TabIndex = 20;
             this.label1.Text = "Custom command:";
             // 
-            // battPercent
-            // 
-            this.battPercent.Name = "battPercent";
-            this.battPercent.Size = new System.Drawing.Size(0, 17);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -491,10 +579,13 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.transportGroup.ResumeLayout(false);
+            this.transportGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnCW)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.goForward)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.turnCCW)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lowerBot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.raiseBot)).EndInit();
             this.miningGroup.ResumeLayout(false);
             this.miningGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.doDump)).EndInit();
@@ -525,10 +616,6 @@
         private System.Windows.Forms.Label labelConsole;
         private System.Windows.Forms.ToolStripMenuItem saveConsoleLogsToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private FontAwesomeIcons.IconButton turnCW;
-        private FontAwesomeIcons.IconButton turnCCW;
-        private FontAwesomeIcons.IconButton goForward;
-        private FontAwesomeIcons.IconButton goBackward;
         private System.Windows.Forms.GroupBox transportGroup;
         private System.Windows.Forms.GroupBox miningGroup;
         private System.Windows.Forms.Label labelDescriptions;
@@ -547,6 +634,18 @@
         private System.Windows.Forms.TextBox txtCustomCommand;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripStatusLabel battPercent;
+        private System.Windows.Forms.Label lblLowerBot;
+        private System.Windows.Forms.Label lblRaiseBot;
+        private FontAwesomeIcons.IconButton goBackward;
+        private FontAwesomeIcons.IconButton turnCW;
+        private FontAwesomeIcons.IconButton goForward;
+        private FontAwesomeIcons.IconButton turnCCW;
+        private System.Windows.Forms.Splitter splitter1;
+        private FontAwesomeIcons.IconButton lowerBot;
+        private FontAwesomeIcons.IconButton raiseBot;
+        private System.Windows.Forms.ToolStripStatusLabel lblBatVolt;
+        private System.Windows.Forms.ToolStripStatusLabel lblSigStrength;
+        private System.Windows.Forms.ToolStripProgressBar progSigStrength;
     }
 }
 

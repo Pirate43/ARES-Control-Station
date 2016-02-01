@@ -68,6 +68,12 @@ while 1:
 
         elif data[0] == '*':  # STOP
             log(conn, motors.halt_motors())
+        elif data[0] == 'u':  # RAISE BOT
+            log(conn, motors.raise_bot())
+        elif data[0] == 't':  # LOWER BOT
+            log(conn, motors.lower_bot())
+        elif data[0] == 'y':  # STOP ACTUATORS
+            log(conn, motors.stop_actuators())
         elif data[0] == 'b':  # BATTERY Request
             log(conn, "BATT " + str(random.randint(1, 100)))
         elif data[0] == 's':  # WIFI SIGNAL STRENGTH Request
