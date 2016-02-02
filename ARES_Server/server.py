@@ -76,7 +76,7 @@ while 1:
         elif data[0] == 'y':  # STOP ACTUATORS
             log(conn, motors.stop_actuators())
         elif data[0] == 'b':  # BATTERY Request
-            log(conn, str(serialread.readbatt()))  # "BATT " + str(random.randint(1, 100)))
+            log(conn, serialread.readbatt())  # "BATT " + str(random.randint(1, 100)))
         elif data[0] == 's':  # WIFI SIGNAL STRENGTH Request
             log(conn, "SIG: 100%")
         elif data[0] == '-':  # QUIT Server gracefully
