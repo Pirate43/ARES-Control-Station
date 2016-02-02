@@ -246,6 +246,8 @@
             this.goBackward.TabIndex = 19;
             this.goBackward.TabStop = false;
             this.goBackward.ToolTipText = null;
+            this.goBackward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.goBackward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // turnCW
             // 
@@ -260,6 +262,8 @@
             this.turnCW.TabIndex = 16;
             this.turnCW.TabStop = false;
             this.turnCW.ToolTipText = null;
+            this.turnCW.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.turnCW.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // goForward
             // 
@@ -274,6 +278,8 @@
             this.goForward.TabIndex = 18;
             this.goForward.TabStop = false;
             this.goForward.ToolTipText = null;
+            this.goForward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.goForward.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // turnCCW
             // 
@@ -288,6 +294,8 @@
             this.turnCCW.TabIndex = 17;
             this.turnCCW.TabStop = false;
             this.turnCCW.ToolTipText = null;
+            this.turnCCW.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.turnCCW.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // splitter1
             // 

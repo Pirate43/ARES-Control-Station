@@ -3,6 +3,7 @@ import socket
 import sys
 import motors
 import random
+import serialread
 
 
 def log(sock, msg):
@@ -75,7 +76,7 @@ while 1:
         elif data[0] == 'y':  # STOP ACTUATORS
             log(conn, motors.stop_actuators())
         elif data[0] == 'b':  # BATTERY Request
-            log(conn, "BATT " + str(random.randint(1, 100)))
+            log(conn, serialread.readBatt())  # "BATT " + str(random.randint(1, 100)))
         elif data[0] == 's':  # WIFI SIGNAL STRENGTH Request
             log(conn, "SIG: 100%")
         else:
@@ -87,3 +88,4 @@ while 1:
 
 print("Terminating..." + str(1))
 conn.close()
+motors.sp.close()
