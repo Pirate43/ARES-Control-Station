@@ -82,8 +82,8 @@ while 1:
         else:
             # noinspection PyTypeChecker
             log(conn, " -Error: unimplemented command.")
-    except:
-        log(conn, "Problem parsing data: " + data)
+    except Exception as e:
+        log(conn, "Problem parsing data: " + e + " ...data: " + data)
         continue
 
 print("Terminating..." + str(1))
