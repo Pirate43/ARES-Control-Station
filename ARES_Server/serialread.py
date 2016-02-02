@@ -3,7 +3,7 @@ import motors
 sp = motors.sp
 
 
-def readBatt():
+def readbatt():
     line = []
     sp.write(bytes("r,0,0;", 'UTF-8'))
     line = str(sp.readline())
