@@ -72,8 +72,9 @@ namespace ControlStation {
                         if (str.Substring(0, 4).Equals("BATT")) {
                             str = str.Substring(5);
                             int batt = int.Parse(str);
-                            batteryBar.Value = batt;
-                            battPercent.Text = batt + "%";
+                            /*batteryBar.Value = batt;
+                            battPercent.Text = batt + "%";*/
+                            lblBatVolt.Text = batt.ToString();
                         }
                         incomingBuf = new Byte[256];
                     }

@@ -5,5 +5,5 @@ sp = motors.sp
 
 def readBatt():
     line = []
-    sp.write(bytes("r", 'UTF-8'))
+    sp.write(bytes("r,0,0;", 'UTF-8'))
     return sp.readline()
