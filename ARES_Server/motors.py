@@ -55,10 +55,10 @@ def go_bwd(speed):  # spin all 4 motors backward
 
 
 def halt_motors():  # stop all 4 motors
-    sp.write(bytes("a," + str(PIN_FR) + ",190;", 'UTF-8'))
-    sp.write(bytes("a," + str(PIN_FL) + ",190;", 'UTF-8'))
-    sp.write(bytes("a," + str(PIN_RR) + ",190;", 'UTF-8'))
-    sp.write(bytes("a," + str(PIN_RL) + ",190;", 'UTF-8'))
+    sp.write(bytes("a," + str(PIN_FR) + ",187;", 'UTF-8'))
+    sp.write(bytes("a," + str(PIN_FL) + ",187;", 'UTF-8'))
+    sp.write(bytes("a," + str(PIN_RR) + ",187;", 'UTF-8'))
+    sp.write(bytes("a," + str(PIN_RL) + ",187;", 'UTF-8'))
     return "STOP"
 
 
@@ -96,7 +96,7 @@ def level2motor(level):  # helper function to turn level to motor speed
         -3: 150,  # LEVEL -3
         -2: 170,  # LEVEL -2
         -1: 180,  # LEVEL -1
-        0: 190,  # NEUTRAL / LEVEL 0
+        0: 187,  # NEUTRAL / LEVEL 0
         1: 200,  # LEVEL 1
         2: 210,  # LEVEL 2
         3: 220,  # LEVEL 3
