@@ -59,12 +59,6 @@
             this.doMining = new FontAwesomeIcons.IconButton();
             this.lowerMining = new FontAwesomeIcons.IconButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.batteryBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.battPercent = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblBatVolt = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblSigStrength = new System.Windows.Forms.ToolStripStatusLabel();
-            this.progSigStrength = new System.Windows.Forms.ToolStripProgressBar();
             this.disconnectButton = new FontAwesomeIcons.IconButton();
             this.miscGroup = new System.Windows.Forms.GroupBox();
             this.lblGamepad = new System.Windows.Forms.Label();
@@ -72,6 +66,8 @@
             this.lblDisconnect = new System.Windows.Forms.Label();
             this.txtCustomCommand = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblBattery = new System.Windows.Forms.Label();
+            this.labelBatteryVolts = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.transportGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).BeginInit();
@@ -85,7 +81,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.raiseMining)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.doMining)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lowerMining)).BeginInit();
-            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.disconnectButton)).BeginInit();
             this.miscGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gamepadButton)).BeginInit();
@@ -137,7 +132,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -145,7 +140,7 @@
             // 
             this.textboxIP.Location = new System.Drawing.Point(59, 34);
             this.textboxIP.Name = "textboxIP";
-            this.textboxIP.Size = new System.Drawing.Size(100, 20);
+            this.textboxIP.Size = new System.Drawing.Size(114, 20);
             this.textboxIP.TabIndex = 4;
             // 
             // labelIP
@@ -159,9 +154,9 @@
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(162, 32);
+            this.buttonConnect.Location = new System.Drawing.Point(179, 32);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(75, 23);
+            this.buttonConnect.Size = new System.Drawing.Size(58, 23);
             this.buttonConnect.TabIndex = 6;
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = true;
@@ -427,55 +422,11 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.batteryBar,
-            this.battPercent,
-            this.lblBatVolt,
-            this.lblSigStrength,
-            this.progSigStrength});
             this.statusStrip1.Location = new System.Drawing.Point(0, 488);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(784, 22);
             this.statusStrip1.TabIndex = 15;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(47, 17);
-            this.toolStripStatusLabel1.Text = "Battery:";
-            // 
-            // batteryBar
-            // 
-            this.batteryBar.Name = "batteryBar";
-            this.batteryBar.Size = new System.Drawing.Size(100, 16);
-            this.batteryBar.Step = -1;
-            this.batteryBar.Value = 100;
-            // 
-            // battPercent
-            // 
-            this.battPercent.Name = "battPercent";
-            this.battPercent.Size = new System.Drawing.Size(0, 17);
-            // 
-            // lblBatVolt
-            // 
-            this.lblBatVolt.Name = "lblBatVolt";
-            this.lblBatVolt.Size = new System.Drawing.Size(18, 17);
-            this.lblBatVolt.Text = "-v";
-            // 
-            // lblSigStrength
-            // 
-            this.lblSigStrength.Margin = new System.Windows.Forms.Padding(50, 3, 0, 2);
-            this.lblSigStrength.Name = "lblSigStrength";
-            this.lblSigStrength.Size = new System.Drawing.Size(87, 17);
-            this.lblSigStrength.Text = "Signal Strength";
-            // 
-            // progSigStrength
-            // 
-            this.progSigStrength.Name = "progSigStrength";
-            this.progSigStrength.Size = new System.Drawing.Size(100, 16);
-            this.progSigStrength.Value = 100;
             // 
             // disconnectButton
             // 
@@ -559,12 +510,32 @@
             this.label1.TabIndex = 20;
             this.label1.Text = "Custom command:";
             // 
+            // lblBattery
+            // 
+            this.lblBattery.AutoSize = true;
+            this.lblBattery.Location = new System.Drawing.Point(8, 439);
+            this.lblBattery.Name = "lblBattery";
+            this.lblBattery.Size = new System.Drawing.Size(46, 13);
+            this.lblBattery.TabIndex = 21;
+            this.lblBattery.Text = "Battery: ";
+            // 
+            // labelBatteryVolts
+            // 
+            this.labelBatteryVolts.AutoSize = true;
+            this.labelBatteryVolts.Location = new System.Drawing.Point(51, 439);
+            this.labelBatteryVolts.Name = "labelBatteryVolts";
+            this.labelBatteryVolts.Size = new System.Drawing.Size(10, 13);
+            this.labelBatteryVolts.TabIndex = 22;
+            this.labelBatteryVolts.Text = "-";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(784, 510);
+            this.Controls.Add(this.labelBatteryVolts);
+            this.Controls.Add(this.lblBattery);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCustomCommand);
             this.Controls.Add(this.miscGroup);
@@ -600,8 +571,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.raiseMining)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.doMining)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lowerMining)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.disconnectButton)).EndInit();
             this.miscGroup.ResumeLayout(false);
             this.miscGroup.PerformLayout();
@@ -632,8 +601,6 @@
         private FontAwesomeIcons.IconButton doMining;
         private FontAwesomeIcons.IconButton lowerMining;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripProgressBar batteryBar;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private FontAwesomeIcons.IconButton disconnectButton;
         private System.Windows.Forms.GroupBox miscGroup;
         private System.Windows.Forms.Label lblDisconnect;
@@ -641,7 +608,6 @@
         private System.Windows.Forms.Label lblGamepad;
         private System.Windows.Forms.TextBox txtCustomCommand;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolStripStatusLabel battPercent;
         private System.Windows.Forms.Label lblLowerBot;
         private System.Windows.Forms.Label lblRaiseBot;
         private FontAwesomeIcons.IconButton goBackward;
@@ -651,9 +617,8 @@
         private System.Windows.Forms.Splitter splitter1;
         private FontAwesomeIcons.IconButton lowerBot;
         private FontAwesomeIcons.IconButton raiseBot;
-        private System.Windows.Forms.ToolStripStatusLabel lblBatVolt;
-        private System.Windows.Forms.ToolStripStatusLabel lblSigStrength;
-        private System.Windows.Forms.ToolStripProgressBar progSigStrength;
+        private System.Windows.Forms.Label lblBattery;
+        private System.Windows.Forms.Label labelBatteryVolts;
     }
 }
 

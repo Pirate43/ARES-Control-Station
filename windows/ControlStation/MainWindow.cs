@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Timers;
 
 namespace ControlStation {
 
@@ -52,7 +54,6 @@ namespace ControlStation {
             doDisconnect = false;
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             log("Connecting to " + textboxIP.Text + "..");
-            batteryBar.PerformStep(); // TODO relate to battery voltage
             try {
                 socket.Connect(textboxIP.Text, 25555);
                 log("connected!");
@@ -71,21 +72,27 @@ namespace ControlStation {
                         var str = System.Text.Encoding.Default.GetString(incomingBuf);
                         if (str.Substring(0, 4).Equals("BATT")) {
                             str = str.Substring(5);
-                            int batt = int.Parse(str);
-                            /*batteryBar.Value = batt;
-                            battPercent.Text = batt + "%";*/
-                            lblBatVolt.Text = batt.ToString();
+                            str = Regex.Replace(str, @"\t|\n|\r", "");
+                            str = Regex.Replace(str, @"\s+", "");
+                            float batt = float.Parse(str);
+                            int percent = (int) (((batt-12.0) * 100.0)/(13.6-12.0));
+                            labelBatteryVolts.Text = batt.ToString() + "v   -   " + percent + "%";
+                            /* range = max - min
+                            correctedStartValue = input - min
+                            percentage = (correctedStartValue * 100) / range */
                         }
                         incomingBuf = new Byte[256];
                     }
                 });
-                battrecv = Task.Run(async () => { // receive battery on interval
-                    while (true) {
-                        if (doDisconnect) break;
-                        send("b");
-                        await Task.Delay(10000);
-                    }
-                });
+                
+                // Create a timer
+                System.Timers.Timer myTimer = new System.Timers.Timer();
+                // Tell the timer what to do when it elapses
+                myTimer.Elapsed += new ElapsedEventHandler(requestBatt);
+                // Set it to go off every five seconds
+                myTimer.Interval = 10000;
+                // And start it        
+                myTimer.Enabled = true;
             }
             catch (Exception ex) {
                 log("Problem connecting: " + ex.Message);
@@ -129,7 +136,6 @@ namespace ControlStation {
                 ds4 = null;
                 log("Gamepad wiped");
                 recv.Dispose();
-                battrecv.Dispose();
 
                 textboxIP.Enabled = true;
                 textboxIP.BackColor = System.Drawing.Color.White;
@@ -238,6 +244,11 @@ namespace ControlStation {
                 return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
             }
             catch (SocketException) { return false; }
+        }
+
+        // Implement a call with the right signature for events going off
+        private void requestBatt(object source, ElapsedEventArgs e) {
+            send("b");
         }
 
     }

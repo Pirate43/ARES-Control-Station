@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ARES Control Station")]
-[assembly: AssemblyDescription("Senior Design 2015-16 project.\r\nCoded by Pablo Canseco with love.")]
+[assembly: AssemblyDescription("Senior Design 2015-16 project.\r\nCoded by Pablo Canseco with love.\r\nSource Code: https://github.com/pmcanseco/ARES-Control-Station")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Florida Institute of Technology")]
 [assembly: AssemblyProduct("ARES Control Station")]

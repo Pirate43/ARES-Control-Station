@@ -2,7 +2,6 @@
 import socket
 import sys
 import motors
-import random
 import serialread
 
 
@@ -76,16 +75,15 @@ while 1:
         elif data[0] == 'y':  # STOP ACTUATORS
             log(conn, motors.stop_actuators())
         elif data[0] == 'b':  # BATTERY Request
-            log(conn, serialread.readbatt())  # "BATT " + str(random.randint(1, 100)))
+            log(conn, serialread.readbatt())
         elif data[0] == 's':  # WIFI SIGNAL STRENGTH Request
             log(conn, "SIG: 100%")
         elif data[0] == '-':  # QUIT Server gracefully
             break
         else:
-            # noinspection PyTypeChecker
             log(conn, " -Error: unimplemented command.")
     except Exception as e:
-        log(conn, "Problem parsing data: " + e + " ...data: " + data)
+        log(conn, "Problem parsing data: " + str(e) + " ...data: " + data)
         continue
 
 print("Terminating..." + str(1))
