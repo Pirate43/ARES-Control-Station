@@ -1,4 +1,4 @@
-# ARES-Control-Station
+# Project ARES - Florida Tech NASA Robotic Mining Competition entry
 
 *NOTE:* **Ensure the Arduino is outputting 190 on the port of the Talon speed controller prior to running the power supply.** Example: send "a,11,190;" where 11 is where the Talon is plugged in, 190 is the PWM value we're setting it to. 
 
