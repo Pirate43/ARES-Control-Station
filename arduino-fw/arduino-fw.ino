@@ -1,6 +1,6 @@
 #include <Servo.h>
-Servo conveyor;
-Servo smallTestServo;
+Servo torxis_f;
+Servo torxis_r;
 String inputString;
 boolean stringComplete = false;
 int neutral = 187;
@@ -15,15 +15,15 @@ void setup() {
     pinMode(22, OUTPUT); // R ACTUATOR DIR
     pinMode(3, OUTPUT);  // L ACTUATOR SPEED
     pinMode(23, OUTPUT); // L ACTUATOR DIR
-    pinMode(12, OUTPUT); // EXCAVATE 1
-    pinMode(13, OUTPUT); // EXCAVATE 2
+    pinMode(11, OUTPUT); // EXCAVATE 1
     analogWrite(5, neutral);
     analogWrite(7, neutral);
     analogWrite(8, neutral);
     analogWrite(10, neutral);
     analogWrite(12, neutral);
     analogWrite(13, neutral);
-    //conveyor.attach(8);
+    torxis_f.attach(11);
+    torxis_f.write(90);
     //conveyor.write(86);
     //smallTestServo.attach(10);
     inputString.reserve(32);
@@ -58,10 +58,11 @@ void loop() {
                 analogWrite(gpio, value); }
                 break;
             case 's': {
-                if (gpio == 8)
-                    conveyor.write(value);
-                if (gpio == 10)
-                    smallTestServo.write(value); }
+                //if (gpio == 8)
+                    //conveyor.write(value);
+                //if (gpio == 10)
+                    //smallTestServo.write(value); 
+                }
                 break;
             case 'h': halt();       break; // STOP ALL MOTORS
             case 'r': read_batt();  break; // READ BATT VOLTAGE
@@ -75,7 +76,7 @@ void loop() {
             case 'z': raise_f();    break; // RAISE FRONT DRUM
             case 'x': lower_f();    break; // LOWER FRONT DRUM
             case 'c': raise_r();    break; // RAISE REAR DRUM
-            case 'v': lower_r();    break; // LOWER REAR DRUM
+            case 'f': lower_r();    break; // LOWER REAR DRUM
         }
         stringComplete = false;
     }
@@ -94,6 +95,9 @@ void halt() {        // stop transport motors
     analogWrite(7, neutral);
     analogWrite(8, neutral);
     analogWrite(10, neutral);
+
+    analogWrite(11, neutral);
+    torxis_f.write(90);
     // TODO rest of motors
 }
 void turn_r() {      // turn right
@@ -133,7 +137,7 @@ void read_batt() {   // read battery voltage
     Serial.println(batt);                           // print real voltage
 }
 void mine_f() {      // mine front drum     TODO
-    
+    analogWrite(11, 230);
 }
 void mine_r() {      // mine rear drum      TODO
     
@@ -145,10 +149,10 @@ void dump_r() {      // dump rear drum      TODO
     
 }
 void raise_f(){      // raise front drum    TODO
-    
+    torxis_f.write(100);
 }
 void lower_f(){      // lower front drum    TODO
-    
+    torxis_f.write(80);
 }
 void raise_r(){      // raise rear drum     TODO
     

@@ -81,6 +81,9 @@ namespace ControlStation {
                             correctedStartValue = input - min
                             percentage = (correctedStartValue * 100) / range */
                         }
+                        else if(str.Substring(0, 3).Equals("SIG")) {
+                            // receive the signal strength
+                        }
                         incomingBuf = new Byte[256];
                     }
                 });
@@ -174,22 +177,22 @@ namespace ControlStation {
             var btn = (FontAwesomeIcons.IconButton)sender;
             btn.BackColor = System.Drawing.Color.Gold;
             switch (btn.Name) {
-                case "goForward":
-                    send("^");
-                    break;
-                case "goBackward":
-                    send("v");
-                    break;
-                case "turnCW":
-                    send(">");
-                    break;
-                case "turnCCW":
-                    send("<");
-                    break;
-                case "raiseBot": send("u"); break;
-                case "lowerBot": send("t"); break;
+                case "goForward":  send("^"); break;
+                case "goBackward": send("v"); break;
+                case "turnCW":     send(">"); break;
+                case "turnCCW":    send("<"); break;
+                case "raiseBot": send("u"); break; // RETRACT ACTUATORS
+                case "lowerBot": send("t"); break; // EXTEND ACTUATORS
+                case "raise_f":  send("z"); break; // RAISE FRONT DRUM
+                case "lower_f":  send("x"); break; // LOWER FRONT DRUM
+                case "mine_f":   send("p"); break; // MINE FRONT DRUM
+                case "dump_f":   send("l"); break; // DUMP FRONT DRUM
+                case "raise_r":  send("c"); break; // RAISE REAR DRUM
+                case "lower_r":  send("f"); break; // LOWER REAR DRUM
+                case "mine_r":   send("o"); break; // MINE REAR DRUM
+                case "dump_r":   send("k"); break; // DUMP REAR DRUM
+                case "disconnectButton": break;
                 default:
-                    MessageBox.Show("Unrecognized button");
                     log("Unrecognized button.");
                     break;
             }
