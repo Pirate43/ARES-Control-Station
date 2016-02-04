@@ -63,6 +63,7 @@ void loop() {
                 if (gpio == 10)
                     smallTestServo.write(value); }
                 break;
+            case 'h': halt();       break; // STOP ALL MOTORS
             case 'r': read_batt();  break; // READ BATT VOLTAGE
             case 'u': retract();    break; // RETRACT ACTUATORS
             case 'y': halt_acts();  break; // STOP ACTUATORS
@@ -93,6 +94,7 @@ void halt() {        // stop transport motors
     analogWrite(7, neutral);
     analogWrite(8, neutral);
     analogWrite(10, neutral);
+    // TODO rest of motors
 }
 void turn_r() {      // turn right
     analogWrite(5, 170);

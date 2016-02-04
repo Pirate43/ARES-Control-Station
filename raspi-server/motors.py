@@ -31,10 +31,10 @@ def go_fwd(speed):  # spin all 4 motors forward
         sp.write(bytes("a," + str(PIN_RL) + ",200;", 'UTF-8'))
         return "GO FWD - (no speed set)"
     else:
-        sp.write(bytes("a,"+str(PIN_FR)+","+str(level2motor(speed))+";", 'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_FL)+","+str(level2motor(speed))+";", 'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_RR)+","+str(level2motor(speed))+";", 'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_RL)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
         return "GO FWD " + str(level2motor(speed))
 
 
@@ -47,19 +47,16 @@ def go_bwd(speed):  # spin all 4 motors backward
         return "GO BWD - (no speed set)"
     else:
         speed *= -1
-        sp.write(bytes("a,"+str(PIN_FR)+","+str(level2motor(speed))+";", 'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_FL)+","+str(level2motor(speed))+";", 'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_RR)+","+str(level2motor(speed))+";", 'UTF-8'))
-        sp.write(bytes("a,"+str(PIN_RL)+","+str(level2motor(speed))+";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
         return "GO BWD " + str(level2motor(speed))
 
 
-def halt_motors():  # stop all 4 motors
-    sp.write(bytes("a," + str(PIN_FR) + ",187;", 'UTF-8'))
-    sp.write(bytes("a," + str(PIN_FL) + ",187;", 'UTF-8'))
-    sp.write(bytes("a," + str(PIN_RR) + ",187;", 'UTF-8'))
-    sp.write(bytes("a," + str(PIN_RL) + ",187;", 'UTF-8'))
-    return "STOP"
+def halt_motors():  # stop all motors
+    send_cmd('h')
+    return "STOP ALL MOTORS"
 
 
 def turn_cw():  # single set speed
@@ -74,19 +71,64 @@ def turn_ccw():  # single set speed
     return "TURN CCW"
 
 
-def raise_bot(): # RETRACT both actuators
-    sp.write(bytes("u,0,0;", 'UTF-8'))
+def raise_bot():  # RETRACT both actuators
+    send_cmd('u')
     return "RAISE CHASSIS"
 
 
 def stop_actuators():  # STOP both actuators
-    sp.write(bytes("y,0,0;", 'UTF-8'))
+    send_cmd('y')
     return "ACTUATORS STOPPED"
 
 
 def lower_bot():  # EXTEND both actuators
-    sp.write(bytes("t,0,0;", 'UTF-8'))
+    send_cmd('t')
     return "LOWER CHASSIS"
+
+
+def mine_f():
+    send_cmd('p')
+    return "MINE FRONT DRUM"
+
+
+def mine_r():
+    send_cmd('o')
+    return "MINE REAR DRUM"
+
+
+def dump_f():
+    send_cmd('l')
+    return "DUMP FRONT DRUM"
+
+
+def dump_r():
+    send_cmd('k')
+    return "DUMP REAR DRUM"
+
+
+def raise_f():
+    send_cmd('z')
+    return "RAISE FRONT DRUM"
+
+
+def lower_f():
+    send_cmd('x')
+    return "LOWER FRONT DRUM"
+
+
+def raise_r():
+    send_cmd('c')
+    return "RAISE REAR DRUM"
+
+
+def lower_r():
+    send_cmd('v')
+    return "LOWER REAR DRUM"
+
+
+# ### HELPER FUNCTIONS ### #
+def send_cmd(c):
+    sp.write(bytes(c + ",0,0;", 'UTF-8'))
 
 
 def level2motor(level):  # helper function to turn level to motor speed

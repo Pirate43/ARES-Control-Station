@@ -10,6 +10,7 @@ def log(sock, msg):
     sock.send(sock_message)
     print(sock_message)
 
+
 # socket settings
 TCP_IP = '0.0.0.0'
 TCP_PORT = 25555
@@ -33,10 +34,6 @@ while 1:
         conn, addr = s.accept()  # wait here until a new connection.
         print("Connection address: ", addr)
         continue
-
-    # if a dash character is received, immediately quit the application
-    if data == '-':
-        break
 
     # print what we received
     print("Received: ", data)
@@ -74,6 +71,22 @@ while 1:
             log(conn, motors.lower_bot())
         elif data[0] == 'y':  # STOP ACTUATORS
             log(conn, motors.stop_actuators())
+        elif data[0] == 'p':  # MINE FRONT DRUM
+            log(conn, motors.mine_f())
+        elif data[0] == 'o':  # MINE REAR DRUM
+            log(conn, motors.mine_r())
+        elif data[0] == 'l':  # DUMP FRONT DRUM
+            log(conn, motors.dump_f())
+        elif data[0] == 'k':  # DUMP REAR DRUM
+            log(conn, motors.dump_r())
+        elif data[0] == 'z':  # RAISE FRONT DRUM
+            log(conn, motors.raise_f())
+        elif data[0] == 'x':  # LOWER FRONT DRUM
+            log(conn, motors.lower_f())
+        elif data[0] == 'c':  # RAISE REAR DRUM
+            log(conn, motors.raise_r())
+        elif data[0] == 'v':  # LOWER REAR DRUM
+            log(conn, motors.lower_r())
         elif data[0] == 'b':  # BATTERY Request
             log(conn, serialread.readbatt())
         elif data[0] == 's':  # WIFI SIGNAL STRENGTH Request
