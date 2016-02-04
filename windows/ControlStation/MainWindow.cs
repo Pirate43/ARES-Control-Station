@@ -14,7 +14,7 @@ namespace ControlStation {
         Socket socket;
         DualShock4 ds4;
         Byte[] incomingBuf = new Byte[16];
-        Task recv, battrecv;
+        Task recv;
         bool doDisconnect = false;
         
         // start gamepad in a separate task
