@@ -186,20 +186,8 @@ namespace ControlStation {
                 case "turnCCW":
                     send("<");
                     break;
-                case "lowerMining":
-                    send("L");
-                    break;
-                case "doMining":
-                    send("M");
-                    break;
-                case "raiseMining":
-                    send("R");
-                    break;
-                case "doDump":
-                    send("D");
-                    break;
-                case "disconnectButton":
-                    break;
+                case "raiseBot": send("u"); break;
+                case "lowerBot": send("t"); break;
                 default:
                     MessageBox.Show("Unrecognized button");
                     log("Unrecognized button.");
@@ -213,6 +201,9 @@ namespace ControlStation {
                 btn.BackColor = System.Drawing.Color.Silver;
                 disableCommands();
             }
+            else if (btn.Name.Equals("raiseBot") || btn.Name.Equals("lowerBot")) {
+                send("y");
+            }
             else send("*");
         }
 
@@ -223,19 +214,6 @@ namespace ControlStation {
         private void disableCommands() {
             transportGroup.Enabled = false;
             miningGroup.Enabled = false;
-        }
-
-        private void raiseBot_mouseDown(object sender, MouseEventArgs e) {
-            send("u");
-        }
-        private void raiseBot_mouseUp(object sender, MouseEventArgs e) {
-            send("y");
-        }
-        private void lowerBot_mouseDown(object sender, MouseEventArgs e) {
-            send("t");
-        }
-        private void lowerBot_mouseUp(object sender, MouseEventArgs e) {
-            raiseBot_mouseUp(sender, e);
         }
 
         public static bool isConnected(Socket socket) {

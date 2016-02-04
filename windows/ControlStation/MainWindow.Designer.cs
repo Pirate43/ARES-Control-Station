@@ -327,8 +327,8 @@
             this.lowerBot.TabIndex = 14;
             this.lowerBot.TabStop = false;
             this.lowerBot.ToolTipText = null;
-            this.lowerBot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lowerBot_mouseDown);
-            this.lowerBot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lowerBot_mouseUp);
+            this.lowerBot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.lowerBot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // raiseBot
             // 
@@ -343,8 +343,8 @@
             this.raiseBot.TabIndex = 13;
             this.raiseBot.TabStop = false;
             this.raiseBot.ToolTipText = null;
-            this.raiseBot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.raiseBot_mouseDown);
-            this.raiseBot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.raiseBot_mouseUp);
+            this.raiseBot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.raiseBot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // miningGroup
             // 
@@ -429,6 +429,8 @@
             this.lower_f.TabIndex = 18;
             this.lower_f.TabStop = false;
             this.lower_f.ToolTipText = null;
+            this.lower_f.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.lower_f.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // raise_f
             // 
@@ -443,6 +445,8 @@
             this.raise_f.TabIndex = 17;
             this.raise_f.TabStop = false;
             this.raise_f.ToolTipText = null;
+            this.raise_f.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.raise_f.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // dump_f
             // 
@@ -457,6 +461,8 @@
             this.dump_f.TabIndex = 16;
             this.dump_f.TabStop = false;
             this.dump_f.ToolTipText = null;
+            this.dump_f.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.dump_f.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // mine_f
             // 
@@ -471,6 +477,8 @@
             this.mine_f.TabIndex = 15;
             this.mine_f.TabStop = false;
             this.mine_f.ToolTipText = null;
+            this.mine_f.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_MouseDown);
+            this.mine_f.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_MouseUp);
             // 
             // dump_r
             // 
@@ -686,6 +694,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(800, 549);
             this.MinimumSize = new System.Drawing.Size(800, 549);
             this.Name = "MainWindow";
