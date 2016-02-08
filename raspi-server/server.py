@@ -3,6 +3,7 @@ import socket
 import sys
 import motors
 import serialread
+import RPi.GPIO as GPIO
 
 
 def log(sock, msg):
@@ -18,21 +19,29 @@ BUFFER_SIZE = 16
 packet_size = 4
 
 print("Python version: " + sys.version)
+GPIO.setmode(GPIO.BOARD)  # Use board pin numbering
+GPIO.setup(7, GPIO.OUT)  # Setup GPIO Pin 7 to OUT
+GPIO.output(7, True)  # Turn on GPIO pin 7
+# pin 7 is the fourth one down from the right.
 
 # create and ready our socket with its settings
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((TCP_IP, TCP_PORT))
 s.listen(1)
 print("Awaiting connection...")
+
 conn, addr = s.accept()
 print("Connection address: ", addr)
+GPIO.output(7, False)  # Turn off GPIO pin 7
 while 1:
     try:
         data = conn.recv(BUFFER_SIZE)
     except:
         print("Client disconnected. Awaiting connection...")
+        GPIO.output(7, True)  # Turn on GPIO pin 7
         conn, addr = s.accept()  # wait here until a new connection.
         print("Connection address: ", addr)
+        GPIO.output(7, False)  # Turn off GPIO pin 7
         continue
 
     # print what we received
