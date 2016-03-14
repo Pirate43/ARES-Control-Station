@@ -62,12 +62,14 @@ def halt_motors():  # stop all motors
 def turn_cw():  # single set speed
     # spin *R motors BWD
     # spin *L motors FWD
+    send_cmd('>')
     return "TURN CW"
 
 
 def turn_ccw():  # single set speed
     # spin *R motors FWD
     # spin *L motors BWD
+    send_cmd('<')
     return "TURN CCW"
 
 

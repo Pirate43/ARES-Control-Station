@@ -74,6 +74,10 @@ while 1:
 
         elif data[0] == '*':  # STOP
             log(conn, motors.halt_motors())
+        elif data[0] == '>':  # TURN CW
+            log(conn, motors.turn_cw())
+        elif data[0] == '<':  # TURN CW
+            log(conn, motors.turn_ccw())
         elif data[0] == 'u':  # RAISE BOT
             log(conn, motors.raise_bot())
         elif data[0] == 't':  # LOWER BOT

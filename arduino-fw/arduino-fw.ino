@@ -65,6 +65,8 @@ void loop() {
                 }
                 break;
             case 'g': go(value);    break; // GO {VALUE} SPEED
+            case '>': turn_r();     break; // TURN CW
+            case '<': turn_l();     break; // TURN CCW
             case 'h': halt();       break; // STOP ALL MOTORS
             case 'r': read_batt();  break; // READ BATT VOLTAGE
             case 'u': retract();    break; // RETRACT ACTUATORS

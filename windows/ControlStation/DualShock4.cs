@@ -139,22 +139,32 @@ namespace ControlStation {
                         if (value != rTrigger) {
                             mw.log("Right Trigger " + value);
                             rTrigger = value;
-                            mw.send("^ " + rTrigger);
-                        }
-                        else {
-                            rTrigger = value;
-                            mw.send("*");
+                            mw.send(value == 0 ? "*" : "^ " + rTrigger);
                         }
                     }
                     else if (offset == "RotationX") { // left trigger
                         value = normalizeTrigger(value);
-                        if (value != lTrigger && value > 0) {
+                        if (value != lTrigger) {
                             mw.log("Left Trigger " + value);
                             lTrigger = value;
-                            mw.send("v " + lTrigger);
+                            mw.send(value==0?"*":"v " + lTrigger);
+                        }
+                    }
+                    else if(offset == "Buttons4") { // LEFT BUMPER
+                        mw.log("LB " + normalizeButton(value));
+                        if (normalizeButton(value)) {
+                            mw.send("<");
                         }
                         else {
-                            lTrigger = value;
+                            mw.send("*");
+                        }
+                    }
+                    else if (offset == "Buttons5") { // RIGHT BUMPER
+                        mw.log("RB " + normalizeButton(value));
+                        if (normalizeButton(value)) {
+                            mw.send(">");
+                        }
+                        else {
                             mw.send("*");
                         }
                     }
