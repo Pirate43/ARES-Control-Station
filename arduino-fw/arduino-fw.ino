@@ -64,6 +64,7 @@ void loop() {
                     //smallTestServo.write(value); 
                 }
                 break;
+            case 'g': go(value);    break; // GO {VALUE} SPEED
             case 'h': halt();       break; // STOP ALL MOTORS
             case 'r': read_batt();  break; // READ BATT VOLTAGE
             case 'u': retract();    break; // RETRACT ACTUATORS

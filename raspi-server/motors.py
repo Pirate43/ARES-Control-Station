@@ -25,32 +25,32 @@ sp = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=2)
 
 def go_fwd(speed):  # spin all 4 motors forward
     if not speed:  # no speed, spin at LEVEL 1
-        sp.write(bytes("a," + str(PIN_FR) + ",200;", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_FL) + ",200;", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RR) + ",200;", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RL) + ",200;", 'UTF-8'))
+        sp.write(bytes("g," + str(PIN_FR) + ",200;", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_FL) + ",200;", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RR) + ",200;", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RL) + ",200;", 'UTF-8'))
         return "GO FWD - (no speed set)"
     else:
-        sp.write(bytes("a," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("g," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
         return "GO FWD " + str(level2motor(speed))
 
 
 def go_bwd(speed):  # spin all 4 motors backward
     if not speed:  # no speed, spin at LEVEL -1
-        sp.write(bytes("a," + str(PIN_FR) + ",180;", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_FL) + ",180;", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RR) + ",180;", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RL) + ",180;", 'UTF-8'))
+        sp.write(bytes("g," + str(PIN_FR) + ",180;", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_FL) + ",180;", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RR) + ",180;", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RL) + ",180;", 'UTF-8'))
         return "GO BWD - (no speed set)"
     else:
         speed *= -1
-        sp.write(bytes("a," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        sp.write(bytes("g," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        # sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
         return "GO BWD " + str(level2motor(speed))
 
 

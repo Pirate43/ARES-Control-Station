@@ -136,24 +136,36 @@ namespace ControlStation {
                     }
                     else if (offset == "RotationY") { // right trigger
                         value = normalizeTrigger(value);
-                        if(value != rTrigger) {
+                        if (value != rTrigger) {
                             mw.log("Right Trigger " + value);
                             rTrigger = value;
-                            mw.send("^ " + rTrigger); 
+                            mw.send("^ " + rTrigger);
+                        }
+                        else {
+                            rTrigger = value;
+                            mw.send("*");
                         }
                     }
                     else if (offset == "RotationX") { // left trigger
                         value = normalizeTrigger(value);
-                        if (value != lTrigger) {
+                        if (value != lTrigger && value > 0) {
                             mw.log("Left Trigger " + value);
                             lTrigger = value;
                             mw.send("v " + lTrigger);
+                        }
+                        else {
+                            lTrigger = value;
+                            mw.send("*");
                         }
                     }
                     else if (offset == "Buttons0") { // square
                         mw.log("■ button: " + normalizeButton(value));
                     }
                     else if (offset == "Buttons1") { // X
+                        if (normalizeButton(value))
+                            mw.send("t");
+                        else
+                            mw.send("y");
                         mw.log("X button: " + normalizeButton(value));
                     }
                     else if (offset == "Buttons2") { // O
@@ -161,6 +173,10 @@ namespace ControlStation {
                         mw.send("*");
                     }
                     else if (offset == "Buttons3") { // triangle
+                        if (normalizeButton(value))
+                            mw.send("u");
+                        else
+                            mw.send("y");
                         mw.log("▲ button: " + normalizeButton(value));
                     }
                     // TODO : L1 / R1 + DPAD
