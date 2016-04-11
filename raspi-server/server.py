@@ -1,9 +1,17 @@
 #!/usr/bin/env python
-import socket
+from time import sleep
 import sys
 import motors
 import serialread
-import RPi.GPIO as GPIO
+import network
+
+import platform
+WINENV = 'Windows' in platform.system()
+
+if not WINENV:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BOARD)  # Use board pin numbering
+    GPIO.setup(7, GPIO.OUT)  # Setup GPIO Pin 7 to OUT
 
 
 def log(sock, msg):
@@ -15,40 +23,27 @@ def log(sock, msg):
 # socket settings
 TCP_IP = '0.0.0.0'
 TCP_PORT = 25555
-BUFFER_SIZE = 16
 packet_size = 4
 
 print("Python version: " + sys.version)
-GPIO.setmode(GPIO.BOARD)  # Use board pin numbering
-GPIO.setup(7, GPIO.OUT)  # Setup GPIO Pin 7 to OUT
-GPIO.output(7, True)  # Turn on GPIO pin 7
-# pin 7 is the fourth one down from the right.
+if not WINENV:
+    GPIO.output(7, True)  # Turn on GPIO pin 7 (the fourth one down from the right)
 
-# create and ready our socket with its settings
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((TCP_IP, TCP_PORT))
-s.listen(1)
-print("Awaiting connection...")
-
-conn, addr = s.accept()
-print("Connection address: ", addr)
-GPIO.output(7, False)  # Turn off GPIO pin 7
+# begin network
+net = network.Network(TCP_IP, TCP_PORT)
+conn = net.connection
+if not WINENV:
+    GPIO.output(7, False)  # Turn off GPIO pin 7
 while 1:
-    try:
-        data = conn.recv(BUFFER_SIZE)
-    except:
-        print("Client disconnected. Awaiting connection...")
-        GPIO.output(7, True)  # Turn on GPIO pin 7
-        conn, addr = s.accept()  # wait here until a new connection.
-        print("Connection address: ", addr)
-        GPIO.output(7, False)  # Turn off GPIO pin 7
+
+    if net.reinstantiate:
+        net = network.Network(TCP_IP, TCP_PORT)
+        conn = net.connection
+    data = net.get_next_command()
+    if not data:
+        sleep(0.001)
         continue
-
-    # print what we received
     print("Received: ", data)
-
-    # decode the data so we can work with it
-    data = data.decode()
 
     try:
         # parse received data
@@ -114,4 +109,4 @@ while 1:
 
 print("Terminating..." + str(1))
 conn.close()
-motors.sp.close()
+motors.end()

@@ -70,6 +70,7 @@ namespace ControlStation {
                         socket.Receive(incomingBuf);
                         log("Robot: " + System.Text.Encoding.UTF8.GetString(incomingBuf));
                         var str = System.Text.Encoding.Default.GetString(incomingBuf);
+                        incomingBuf = new Byte[256];
                         if (str.Substring(0, 4).Equals("BATT")) {
                             str = str.Substring(5);
                             str = Regex.Replace(str, @"\t|\n|\r", "");
@@ -84,7 +85,6 @@ namespace ControlStation {
                         else if(str.Substring(0, 3).Equals("SIG")) {
                             // receive the signal strength
                         }
-                        incomingBuf = new Byte[256];
                     }
                 });
                 
@@ -92,8 +92,8 @@ namespace ControlStation {
                 System.Timers.Timer myTimer = new System.Timers.Timer();
                 // Tell the timer what to do when it elapses
                 myTimer.Elapsed += new ElapsedEventHandler(requestBatt);
-                // Set it to go off every five seconds
-                myTimer.Interval = 10000;
+                // Set it to go off every <milliseconds>
+                myTimer.Interval = 20000;
                 // And start it        
                 myTimer.Enabled = true;
             }
@@ -170,8 +170,8 @@ namespace ControlStation {
             return value.ToString("yyyyMMdd--HHmmss");
         }
         public void send(String s) {
-            socket.Send(System.Text.Encoding.UTF8.GetBytes(s));
             log("GUI: " + s);
+            socket.Send(System.Text.Encoding.UTF8.GetBytes(s + ";"));
         }
         private void btn_MouseDown(object sender, MouseEventArgs e) {
             var btn = (FontAwesomeIcons.IconButton)sender;

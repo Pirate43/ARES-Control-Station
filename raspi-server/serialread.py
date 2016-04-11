@@ -1,8 +1,12 @@
-from threading import Thread
 import motors
-sp = motors.sp
+WINENV = motors.WINENV
+if not WINENV:
+    sp = motors.sp
 
 
 def readbatt():
-    sp.write(bytes("r,0,0;", 'UTF-8'))
-    return sp.readline().decode("utf-8")
+    if not WINENV:
+        sp.write(bytes("r,0,0;", 'UTF-8'))
+        return sp.readline().decode("utf-8")
+    else:
+        return "BATT 13.4"

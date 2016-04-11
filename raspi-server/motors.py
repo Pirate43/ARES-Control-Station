@@ -1,4 +1,8 @@
-import serial
+import platform
+WINENV = 'Windows' in platform.system()
+if not WINENV:
+    import serial
+    sp = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=2) # Open our serial connection
 
 # motor values
 # 125~185 - reverse
@@ -19,38 +23,23 @@ PIN_ACT_R_SPD = 2
 PIN_ACT_L_DIR = 23
 PIN_ACT_L_SPD = 3
 
-# Open our serial connection
-sp = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=2)
-
 
 def go_fwd(speed):  # spin all 4 motors forward
     if not speed:  # no speed, spin at LEVEL 1
-        sp.write(bytes("g," + str(PIN_FR) + ",200;", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_FL) + ",200;", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RR) + ",200;", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RL) + ",200;", 'UTF-8'))
+        if not WINENV: sp.write(bytes("g," + str(PIN_FR) + ",200;", 'UTF-8'))
         return "GO FWD - (no speed set)"
     else:
-        sp.write(bytes("g," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        if not WINENV:sp.write(bytes("g," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
         return "GO FWD " + str(level2motor(speed))
 
 
 def go_bwd(speed):  # spin all 4 motors backward
     if not speed:  # no speed, spin at LEVEL -1
-        sp.write(bytes("g," + str(PIN_FR) + ",180;", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_FL) + ",180;", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RR) + ",180;", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RL) + ",180;", 'UTF-8'))
+        if not WINENV:sp.write(bytes("g," + str(PIN_FR) + ",180;", 'UTF-8'))
         return "GO BWD - (no speed set)"
     else:
         speed *= -1
-        sp.write(bytes("g," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_FL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
-        # sp.write(bytes("a," + str(PIN_RL) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
+        if not WINENV:sp.write(bytes("g," + str(PIN_FR) + "," + str(level2motor(speed)) + ";", 'UTF-8'))
         return "GO BWD " + str(level2motor(speed))
 
 
@@ -60,15 +49,13 @@ def halt_motors():  # stop all motors
 
 
 def turn_cw():  # single set speed
-    # spin *R motors BWD
-    # spin *L motors FWD
+    # spin *R motors BWD, spin *L motors FWD
     send_cmd('>')
     return "TURN CW"
 
 
 def turn_ccw():  # single set speed
-    # spin *R motors FWD
-    # spin *L motors BWD
+    # spin *R motors FWD, spin *L motors BWD
     send_cmd('<')
     return "TURN CCW"
 
@@ -130,7 +117,10 @@ def lower_r():
 
 # ### HELPER FUNCTIONS ### #
 def send_cmd(c):
-    sp.write(bytes(c + ",0,0;", 'UTF-8'))
+    if not WINENV:
+        sp.write(bytes(c + ",0,0;", 'UTF-8'))
+    else:
+        return True
 
 
 def level2motor(level):  # helper function to turn level to motor speed
@@ -148,3 +138,7 @@ def level2motor(level):  # helper function to turn level to motor speed
         5: 254  # LEVEL 5
     }
     return int(levels[level])
+
+
+def end():
+    sp.close()
