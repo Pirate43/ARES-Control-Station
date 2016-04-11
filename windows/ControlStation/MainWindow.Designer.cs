@@ -33,6 +33,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveConsoleLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,6 @@
             this.miningGroup = new System.Windows.Forms.GroupBox();
             this.lblFront = new System.Windows.Forms.Label();
             this.lblRear = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.lblDump = new System.Windows.Forms.Label();
             this.lower_f = new FontAwesomeIcons.IconButton();
@@ -78,6 +78,7 @@
             this.labelBatteryVolts = new System.Windows.Forms.Label();
             this.lblSignal = new System.Windows.Forms.Label();
             this.lblSignalValue = new System.Windows.Forms.Label();
+            this.dualModeCheckBox = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.transportGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).BeginInit();
@@ -116,6 +117,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveConsoleLogsToolStripMenuItem,
+            this.buttonMapToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -127,6 +129,13 @@
             this.saveConsoleLogsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveConsoleLogsToolStripMenuItem.Text = "Save console logs...";
             this.saveConsoleLogsToolStripMenuItem.Click += new System.EventHandler(this.saveConsoleLogsToolStripMenuItem_Click);
+            // 
+            // buttonMapToolStripMenuItem
+            // 
+            this.buttonMapToolStripMenuItem.Name = "buttonMapToolStripMenuItem";
+            this.buttonMapToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.buttonMapToolStripMenuItem.Text = "Button Map";
+            this.buttonMapToolStripMenuItem.Click += new System.EventHandler(this.buttonMapToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -348,9 +357,9 @@
             // 
             // miningGroup
             // 
+            this.miningGroup.Controls.Add(this.dualModeCheckBox);
             this.miningGroup.Controls.Add(this.lblFront);
             this.miningGroup.Controls.Add(this.lblRear);
-            this.miningGroup.Controls.Add(this.radioButton1);
             this.miningGroup.Controls.Add(this.label2);
             this.miningGroup.Controls.Add(this.lblDump);
             this.miningGroup.Controls.Add(this.lower_f);
@@ -386,17 +395,6 @@
             this.lblRear.Size = new System.Drawing.Size(37, 13);
             this.lblRear.TabIndex = 22;
             this.lblRear.Text = "REAR";
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(77, -2);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(76, 17);
-            this.radioButton1.TabIndex = 21;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Dual-mode";
-            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -670,6 +668,16 @@
             this.lblSignalValue.TabIndex = 24;
             this.lblSignalValue.Text = "-";
             // 
+            // dualModeCheckBox
+            // 
+            this.dualModeCheckBox.AutoSize = true;
+            this.dualModeCheckBox.Location = new System.Drawing.Point(81, 2);
+            this.dualModeCheckBox.Name = "dualModeCheckBox";
+            this.dualModeCheckBox.Size = new System.Drawing.Size(78, 17);
+            this.dualModeCheckBox.TabIndex = 25;
+            this.dualModeCheckBox.Text = "Dual Mode";
+            this.dualModeCheckBox.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -771,13 +779,14 @@
         private FontAwesomeIcons.IconButton raise_f;
         private FontAwesomeIcons.IconButton dump_f;
         private FontAwesomeIcons.IconButton mine_f;
-        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblDump;
         private System.Windows.Forms.Label lblFront;
         private System.Windows.Forms.Label lblRear;
         private System.Windows.Forms.Label lblSignal;
         private System.Windows.Forms.Label lblSignalValue;
+        private System.Windows.Forms.ToolStripMenuItem buttonMapToolStripMenuItem;
+        private System.Windows.Forms.CheckBox dualModeCheckBox;
     }
 }
 

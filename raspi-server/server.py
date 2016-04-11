@@ -19,7 +19,6 @@ def log(sock, msg):
     sock.send(sock_message)
     print(sock_message)
 
-
 # socket settings
 TCP_IP = '0.0.0.0'
 TCP_PORT = 25555

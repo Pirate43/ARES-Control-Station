@@ -152,6 +152,10 @@ namespace ControlStation {
             }
         }
 
+        /// <summary>
+        /// takes the text value of the custom command box and
+        /// sends it to the robot.
+        /// </summary>
         private void sendCustomCommand(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == (char)Keys.Return) {
                 send(txtCustomCommand.Text);
@@ -171,16 +175,23 @@ namespace ControlStation {
         }
         public void send(String s) {
             log("GUI: " + s);
-            socket.Send(System.Text.Encoding.UTF8.GetBytes(s + ";"));
+            try {
+                socket.Send(System.Text.Encoding.UTF8.GetBytes(s + ";"));
+            } catch(Exception ex) {
+                log("Socket error, disconnecting: " + ex.Message);
+                log("Disconnecting");
+                disconnectButton_Click(null, null);
+            }
         }
         private void btn_MouseDown(object sender, MouseEventArgs e) {
             var btn = (FontAwesomeIcons.IconButton)sender;
             btn.BackColor = System.Drawing.Color.Gold;
+            bool dualMode = dualModeCheckBox.Checked;
             switch (btn.Name) {
-                case "goForward":  send("^"); break;
-                case "goBackward": send("v"); break;
-                case "turnCW":     send(">"); break;
-                case "turnCCW":    send("<"); break;
+                case "goForward":  send("^"); break; // GO FWD
+                case "goBackward": send("v"); break; // GO BACKWARD
+                case "turnCW":     send(">"); break; // TURN RIGHT
+                case "turnCCW":    send("<"); break; // TURN LEFT
                 case "raiseBot": send("u"); break; // RETRACT ACTUATORS
                 case "lowerBot": send("t"); break; // EXTEND ACTUATORS
                 case "raise_f":  send("z"); break; // RAISE FRONT DRUM
@@ -219,6 +230,12 @@ namespace ControlStation {
             miningGroup.Enabled = false;
         }
 
+        /// <summary>
+        /// check the connection to the robot
+        /// </summary>
+        /// <param name="socket">The socket to check if it's connected.</param>
+        /// <returns>true if we're connected</returns>
+        /// <returns>false if we're not connected</returns>
         public static bool isConnected(Socket socket) {
             try
             {
@@ -227,10 +244,19 @@ namespace ControlStation {
             catch (SocketException) { return false; }
         }
 
-        // Implement a call with the right signature for events going off
+        /// <summary>
+        /// sends a letter 'b' to the robot to receive battery voltage
+        /// </summary>
         private void requestBatt(object source, ElapsedEventArgs e) {
             send("b");
         }
 
+        /// <summary>
+        /// shows the button mapping window
+        /// </summary>
+        private void buttonMapToolStripMenuItem_Click(object sender, EventArgs e) {
+            ButtonMap buttonMap = new ButtonMap();
+            buttonMap.Show();
+        }
     }
 }
