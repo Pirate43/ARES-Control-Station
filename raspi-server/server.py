@@ -92,7 +92,7 @@ while 1:
             log(conn, motors.lower_f())
         elif data[0] == 'c':  # RAISE REAR DRUM
             log(conn, motors.raise_r())
-        elif data[0] == 'v':  # LOWER REAR DRUM
+        elif data[0] == 'f':  # LOWER REAR DRUM
             log(conn, motors.lower_r())
         elif data[0] == 'b':  # BATTERY Request
             log(conn, serialread.readbatt())

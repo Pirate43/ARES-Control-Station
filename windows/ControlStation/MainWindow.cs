@@ -22,9 +22,10 @@ namespace ControlStation {
 
         Socket socket;
         DualShock4 ds4;
-        Byte[] incomingBuf = new Byte[16];
+        Byte[] incomingBuf = new Byte[32];
         Task recv;
         bool doDisconnect = false;
+        bool global_dualMode = false;
         
         // start gamepad in a separate task
         private void gamepadButton_Click(object sender, EventArgs e) {
@@ -205,7 +206,7 @@ namespace ControlStation {
         private void btn_MouseDown(object sender, MouseEventArgs e) {
             var btn = (FontAwesomeIcons.IconButton)sender;
             btn.BackColor = System.Drawing.Color.Gold;
-            bool dualMode = dualModeCheckBox.Checked;
+            bool antiSO = global_dualMode && e != null; //anti-recursive loop
             switch (btn.Name) {
                 case "goForward":  send("^"); break; // GO FWD
                 case "goBackward": send("v"); break; // GO BACKWARD
@@ -213,14 +214,17 @@ namespace ControlStation {
                 case "turnCCW":    send("<"); break; // TURN LEFT
                 case "raiseBot": send("u"); break; // RETRACT ACTUATORS
                 case "lowerBot": send("t"); break; // EXTEND ACTUATORS
-                case "raise_f":  send("z"); break; // RAISE FRONT DRUM
-                case "lower_f":  send("x"); break; // LOWER FRONT DRUM
-                case "mine_f":   send("p"); break; // MINE FRONT DRUM
-                case "dump_f":   send("l"); break; // DUMP FRONT DRUM
-                case "raise_r":  send("c"); break; // RAISE REAR DRUM
-                case "lower_r":  send("f"); break; // LOWER REAR DRUM
-                case "mine_r":   send("o"); break; // MINE REAR DRUM
-                case "dump_r":   send("k"); break; // DUMP REAR DRUM
+
+                // if dual-mode, call the opposing mousedown function.
+                case "raise_f":  send("z"); if (antiSO) btn_MouseDown(raise_r, null); break; // RAISE FRONT DRUM
+                case "lower_f":  send("x"); if (antiSO) btn_MouseDown(lower_r, null); break; // LOWER FRONT DRUM
+                case "mine_f":   send("p"); if (antiSO) btn_MouseDown(mine_r, null);  break; // MINE FRONT DRUM
+                case "dump_f":   send("l"); if (antiSO) btn_MouseDown(dump_r, null);  break; // DUMP FRONT DRUM
+                case "raise_r":  send("c"); if (antiSO) btn_MouseDown(raise_f, null); break; // RAISE REAR DRUM
+                case "lower_r":  send("f"); if (antiSO) btn_MouseDown(lower_f, null); break; // LOWER REAR DRUM
+                case "mine_r":   send("o"); if (antiSO) btn_MouseDown(mine_f, null);  break; // MINE REAR DRUM
+                case "dump_r":   send("k"); if (antiSO) btn_MouseDown(dump_f, null);  break; // DUMP REAR DRUM
+
                 case "disconnectButton": break;
                 default:
                     log("Unrecognized button.");
@@ -238,6 +242,18 @@ namespace ControlStation {
                 send("y");
             }
             else send("*");
+
+            bool antiSO = global_dualMode && e != null; // anti-recursive loop (anti-stack overflow)
+            switch(btn.Name) {
+                case "raise_f": if (antiSO) btn_MouseUp(raise_r, null); break; // RAISE FRONT DRUM
+                case "lower_f": if (antiSO) btn_MouseUp(lower_r, null); break; // LOWER FRONT DRUM
+                case "mine_f": if (antiSO) btn_MouseUp(mine_r, null); break;   // MINE FRONT DRUM
+                case "dump_f": if (antiSO) btn_MouseUp(dump_r, null); break;   // DUMP FRONT DRUM
+                case "raise_r": if (antiSO) btn_MouseUp(raise_f, null); break; // RAISE REAR DRUM
+                case "lower_r": if (antiSO) btn_MouseUp(lower_f, null); break; // LOWER REAR DRUM
+                case "mine_r": if (antiSO) btn_MouseUp(mine_f, null); break;   // MINE REAR DRUM
+                case "dump_r": if (antiSO) btn_MouseUp(dump_f, null); break;   // DUMP REAR DRUM
+            }
         }
 
         public void btnFakePress(object button) {
@@ -285,6 +301,13 @@ namespace ControlStation {
         private void buttonMapToolStripMenuItem_Click(object sender, EventArgs e) {
             ButtonMap buttonMap = new ButtonMap();
             buttonMap.Show();
+        }
+
+        private void dualMode(object sender, EventArgs e) {
+            if (dualModeCheckBox.Checked)
+                global_dualMode = true;
+            else
+                global_dualMode = false;
         }
     }
 }

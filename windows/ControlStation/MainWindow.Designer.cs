@@ -381,6 +381,7 @@
             this.dualModeCheckBox.TabIndex = 25;
             this.dualModeCheckBox.Text = "Dual Mode";
             this.dualModeCheckBox.UseVisualStyleBackColor = true;
+            this.dualModeCheckBox.CheckedChanged += new System.EventHandler(this.dualMode);
             // 
             // lblFront
             // 
