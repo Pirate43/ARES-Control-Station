@@ -37,7 +37,6 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textboxIP = new System.Windows.Forms.TextBox();
             this.labelIP = new System.Windows.Forms.Label();
             this.buttonConnect = new System.Windows.Forms.Button();
             this.console = new System.Windows.Forms.TextBox();
@@ -54,6 +53,7 @@
             this.lowerBot = new FontAwesomeIcons.IconButton();
             this.raiseBot = new FontAwesomeIcons.IconButton();
             this.miningGroup = new System.Windows.Forms.GroupBox();
+            this.dualModeCheckBox = new System.Windows.Forms.CheckBox();
             this.lblFront = new System.Windows.Forms.Label();
             this.lblRear = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -78,7 +78,7 @@
             this.labelBatteryVolts = new System.Windows.Forms.Label();
             this.lblSignal = new System.Windows.Forms.Label();
             this.lblSignalValue = new System.Windows.Forms.Label();
-            this.dualModeCheckBox = new System.Windows.Forms.CheckBox();
+            this.ipCombobox = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.transportGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.goBackward)).BeginInit();
@@ -104,12 +104,13 @@
             // menuStrip1
             // 
             this.menuStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(18, 18);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(784, 27);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip";
             // 
@@ -120,27 +121,27 @@
             this.buttonMapToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(41, 23);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveConsoleLogsToolStripMenuItem
             // 
             this.saveConsoleLogsToolStripMenuItem.Name = "saveConsoleLogsToolStripMenuItem";
-            this.saveConsoleLogsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.saveConsoleLogsToolStripMenuItem.Size = new System.Drawing.Size(197, 24);
             this.saveConsoleLogsToolStripMenuItem.Text = "Save console logs...";
             this.saveConsoleLogsToolStripMenuItem.Click += new System.EventHandler(this.saveConsoleLogsToolStripMenuItem_Click);
             // 
             // buttonMapToolStripMenuItem
             // 
             this.buttonMapToolStripMenuItem.Name = "buttonMapToolStripMenuItem";
-            this.buttonMapToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.buttonMapToolStripMenuItem.Size = new System.Drawing.Size(197, 24);
             this.buttonMapToolStripMenuItem.Text = "Button Map";
             this.buttonMapToolStripMenuItem.Click += new System.EventHandler(this.buttonMapToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(197, 24);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -149,37 +150,30 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(128, 24);
             this.aboutToolStripMenuItem.Text = "About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // textboxIP
-            // 
-            this.textboxIP.Location = new System.Drawing.Point(59, 34);
-            this.textboxIP.Name = "textboxIP";
-            this.textboxIP.Size = new System.Drawing.Size(114, 20);
-            this.textboxIP.TabIndex = 4;
             // 
             // labelIP
             // 
             this.labelIP.AutoSize = true;
             this.labelIP.Location = new System.Drawing.Point(5, 37);
             this.labelIP.Name = "labelIP";
-            this.labelIP.Size = new System.Drawing.Size(52, 13);
+            this.labelIP.Size = new System.Drawing.Size(57, 15);
             this.labelIP.TabIndex = 5;
             this.labelIP.Text = "Robot IP:";
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(179, 32);
+            this.buttonConnect.Location = new System.Drawing.Point(182, 32);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(58, 23);
+            this.buttonConnect.Size = new System.Drawing.Size(69, 23);
             this.buttonConnect.TabIndex = 6;
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = true;
@@ -204,7 +198,7 @@
             this.labelConsole.AutoSize = true;
             this.labelConsole.Location = new System.Drawing.Point(258, 35);
             this.labelConsole.Name = "labelConsole";
-            this.labelConsole.Size = new System.Drawing.Size(48, 13);
+            this.labelConsole.Size = new System.Drawing.Size(55, 15);
             this.labelConsole.TabIndex = 8;
             this.labelConsole.Text = "Console:";
             // 
@@ -238,16 +232,16 @@
             this.lblLowerBot.AutoSize = true;
             this.lblLowerBot.Location = new System.Drawing.Point(184, 115);
             this.lblLowerBot.Name = "lblLowerBot";
-            this.lblLowerBot.Size = new System.Drawing.Size(36, 13);
+            this.lblLowerBot.Size = new System.Drawing.Size(41, 15);
             this.lblLowerBot.TabIndex = 20;
             this.lblLowerBot.Text = "Lower";
             // 
             // lblRaiseBot
             // 
             this.lblRaiseBot.AutoSize = true;
-            this.lblRaiseBot.Location = new System.Drawing.Point(184, 12);
+            this.lblRaiseBot.Location = new System.Drawing.Point(183, 10);
             this.lblRaiseBot.Name = "lblRaiseBot";
-            this.lblRaiseBot.Size = new System.Drawing.Size(34, 13);
+            this.lblRaiseBot.Size = new System.Drawing.Size(39, 15);
             this.lblRaiseBot.TabIndex = 16;
             this.lblRaiseBot.Text = "Raise";
             // 
@@ -378,12 +372,22 @@
             this.miningGroup.TabStop = false;
             this.miningGroup.Text = "Mining";
             // 
+            // dualModeCheckBox
+            // 
+            this.dualModeCheckBox.AutoSize = true;
+            this.dualModeCheckBox.Location = new System.Drawing.Point(81, 2);
+            this.dualModeCheckBox.Name = "dualModeCheckBox";
+            this.dualModeCheckBox.Size = new System.Drawing.Size(87, 19);
+            this.dualModeCheckBox.TabIndex = 25;
+            this.dualModeCheckBox.Text = "Dual Mode";
+            this.dualModeCheckBox.UseVisualStyleBackColor = true;
+            // 
             // lblFront
             // 
             this.lblFront.AutoSize = true;
-            this.lblFront.Location = new System.Drawing.Point(181, 74);
+            this.lblFront.Location = new System.Drawing.Point(178, 74);
             this.lblFront.Name = "lblFront";
-            this.lblFront.Size = new System.Drawing.Size(44, 13);
+            this.lblFront.Size = new System.Drawing.Size(48, 15);
             this.lblFront.TabIndex = 23;
             this.lblFront.Text = "FRONT";
             // 
@@ -392,27 +396,27 @@
             this.lblRear.AutoSize = true;
             this.lblRear.Location = new System.Drawing.Point(9, 74);
             this.lblRear.Name = "lblRear";
-            this.lblRear.Size = new System.Drawing.Size(37, 13);
+            this.lblRear.Size = new System.Drawing.Size(40, 15);
             this.lblRear.TabIndex = 22;
             this.lblRear.Text = "REAR";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(52, 25);
+            this.label2.Location = new System.Drawing.Point(52, 23);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(116, 13);
+            this.label2.Size = new System.Drawing.Size(120, 15);
             this.label2.TabIndex = 20;
-            this.label2.Text = "Mine                     Mine";
+            this.label2.Text = "Mine                   Mine";
             // 
             // lblDump
             // 
             this.lblDump.AutoSize = true;
             this.lblDump.Location = new System.Drawing.Point(48, 127);
             this.lblDump.Name = "lblDump";
-            this.lblDump.Size = new System.Drawing.Size(123, 13);
+            this.lblDump.Size = new System.Drawing.Size(126, 15);
             this.lblDump.TabIndex = 19;
-            this.lblDump.Text = " Dump                   Dump";
+            this.lblDump.Text = " Dump                Dump";
             // 
             // lower_f
             // 
@@ -544,7 +548,8 @@
             // 
             // statusStrip
             // 
-            this.statusStrip.Location = new System.Drawing.Point(0, 488);
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(18, 18);
+            this.statusStrip.Location = new System.Drawing.Point(0, 485);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(784, 22);
             this.statusStrip.TabIndex = 15;
@@ -586,7 +591,7 @@
             this.lblGamepad.AutoSize = true;
             this.lblGamepad.Location = new System.Drawing.Point(49, 62);
             this.lblGamepad.Name = "lblGamepad";
-            this.lblGamepad.Size = new System.Drawing.Size(53, 13);
+            this.lblGamepad.Size = new System.Drawing.Size(62, 15);
             this.lblGamepad.TabIndex = 18;
             this.lblGamepad.Text = "Gamepad";
             // 
@@ -611,15 +616,15 @@
             this.lblDisconnect.AutoSize = true;
             this.lblDisconnect.Location = new System.Drawing.Point(17, 62);
             this.lblDisconnect.Name = "lblDisconnect";
-            this.lblDisconnect.Size = new System.Drawing.Size(24, 13);
+            this.lblDisconnect.Size = new System.Drawing.Size(23, 15);
             this.lblDisconnect.TabIndex = 16;
             this.lblDisconnect.Text = "d/c";
             // 
             // txtCustomCommand
             // 
-            this.txtCustomCommand.Location = new System.Drawing.Point(353, 460);
+            this.txtCustomCommand.Location = new System.Drawing.Point(375, 460);
             this.txtCustomCommand.Name = "txtCustomCommand";
-            this.txtCustomCommand.Size = new System.Drawing.Size(419, 20);
+            this.txtCustomCommand.Size = new System.Drawing.Size(397, 20);
             this.txtCustomCommand.TabIndex = 18;
             this.txtCustomCommand.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sendCustomCommand);
             // 
@@ -628,7 +633,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(258, 463);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 13);
+            this.label1.Size = new System.Drawing.Size(111, 15);
             this.label1.TabIndex = 20;
             this.label1.Text = "Custom command:";
             // 
@@ -637,7 +642,7 @@
             this.lblBattery.AutoSize = true;
             this.lblBattery.Location = new System.Drawing.Point(8, 440);
             this.lblBattery.Name = "lblBattery";
-            this.lblBattery.Size = new System.Drawing.Size(46, 13);
+            this.lblBattery.Size = new System.Drawing.Size(50, 15);
             this.lblBattery.TabIndex = 21;
             this.lblBattery.Text = "Battery: ";
             // 
@@ -646,7 +651,7 @@
             this.labelBatteryVolts.AutoSize = true;
             this.labelBatteryVolts.Location = new System.Drawing.Point(51, 440);
             this.labelBatteryVolts.Name = "labelBatteryVolts";
-            this.labelBatteryVolts.Size = new System.Drawing.Size(10, 13);
+            this.labelBatteryVolts.Size = new System.Drawing.Size(11, 15);
             this.labelBatteryVolts.TabIndex = 22;
             this.labelBatteryVolts.Text = "-";
             // 
@@ -655,7 +660,7 @@
             this.lblSignal.AutoSize = true;
             this.lblSignal.Location = new System.Drawing.Point(8, 456);
             this.lblSignal.Name = "lblSignal";
-            this.lblSignal.Size = new System.Drawing.Size(42, 13);
+            this.lblSignal.Size = new System.Drawing.Size(48, 15);
             this.lblSignal.TabIndex = 23;
             this.lblSignal.Text = "Signal: ";
             // 
@@ -664,26 +669,25 @@
             this.lblSignalValue.AutoSize = true;
             this.lblSignalValue.Location = new System.Drawing.Point(51, 456);
             this.lblSignalValue.Name = "lblSignalValue";
-            this.lblSignalValue.Size = new System.Drawing.Size(10, 13);
+            this.lblSignalValue.Size = new System.Drawing.Size(11, 15);
             this.lblSignalValue.TabIndex = 24;
             this.lblSignalValue.Text = "-";
             // 
-            // dualModeCheckBox
+            // ipCombobox
             // 
-            this.dualModeCheckBox.AutoSize = true;
-            this.dualModeCheckBox.Location = new System.Drawing.Point(81, 2);
-            this.dualModeCheckBox.Name = "dualModeCheckBox";
-            this.dualModeCheckBox.Size = new System.Drawing.Size(78, 17);
-            this.dualModeCheckBox.TabIndex = 25;
-            this.dualModeCheckBox.Text = "Dual Mode";
-            this.dualModeCheckBox.UseVisualStyleBackColor = true;
+            this.ipCombobox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.ipCombobox.Location = new System.Drawing.Point(60, 33);
+            this.ipCombobox.Name = "ipCombobox";
+            this.ipCombobox.Size = new System.Drawing.Size(121, 21);
+            this.ipCombobox.TabIndex = 25;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(784, 510);
+            this.ClientSize = new System.Drawing.Size(784, 507);
+            this.Controls.Add(this.ipCombobox);
             this.Controls.Add(this.lblSignalValue);
             this.Controls.Add(this.lblSignal);
             this.Controls.Add(this.labelBatteryVolts);
@@ -698,7 +702,6 @@
             this.Controls.Add(this.console);
             this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.labelIP);
-            this.Controls.Add(this.textboxIP);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -743,7 +746,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.TextBox textboxIP;
         private System.Windows.Forms.Label labelIP;
         private System.Windows.Forms.Button buttonConnect;
         private System.Windows.Forms.TextBox console;
@@ -752,12 +754,12 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.GroupBox transportGroup;
         private System.Windows.Forms.GroupBox miningGroup;
-        private FontAwesomeIcons.IconButton dump_r;
-        private FontAwesomeIcons.IconButton raise_r;
-        private FontAwesomeIcons.IconButton mine_r;
-        private FontAwesomeIcons.IconButton lower_r;
+        public FontAwesomeIcons.IconButton dump_r;
+        public FontAwesomeIcons.IconButton raise_r;
+        public FontAwesomeIcons.IconButton mine_r;
+        public FontAwesomeIcons.IconButton lower_r;
         private System.Windows.Forms.StatusStrip statusStrip;
-        private FontAwesomeIcons.IconButton disconnectButton;
+        public FontAwesomeIcons.IconButton disconnectButton;
         private System.Windows.Forms.GroupBox miscGroup;
         private System.Windows.Forms.Label lblDisconnect;
         private FontAwesomeIcons.IconButton gamepadButton;
@@ -766,19 +768,19 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblLowerBot;
         private System.Windows.Forms.Label lblRaiseBot;
-        private FontAwesomeIcons.IconButton goBackward;
-        private FontAwesomeIcons.IconButton turnCW;
-        private FontAwesomeIcons.IconButton goForward;
-        private FontAwesomeIcons.IconButton turnCCW;
+        public FontAwesomeIcons.IconButton goBackward;
+        public FontAwesomeIcons.IconButton turnCW;
+        public FontAwesomeIcons.IconButton goForward;
+        public FontAwesomeIcons.IconButton turnCCW;
         private System.Windows.Forms.Splitter splitter1;
-        private FontAwesomeIcons.IconButton lowerBot;
-        private FontAwesomeIcons.IconButton raiseBot;
+        public FontAwesomeIcons.IconButton lowerBot;
+        public FontAwesomeIcons.IconButton raiseBot;
         private System.Windows.Forms.Label lblBattery;
         private System.Windows.Forms.Label labelBatteryVolts;
-        private FontAwesomeIcons.IconButton lower_f;
-        private FontAwesomeIcons.IconButton raise_f;
-        private FontAwesomeIcons.IconButton dump_f;
-        private FontAwesomeIcons.IconButton mine_f;
+        public FontAwesomeIcons.IconButton lower_f;
+        public FontAwesomeIcons.IconButton raise_f;
+        public FontAwesomeIcons.IconButton dump_f;
+        public FontAwesomeIcons.IconButton mine_f;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblDump;
         private System.Windows.Forms.Label lblFront;
@@ -787,6 +789,7 @@
         private System.Windows.Forms.Label lblSignalValue;
         private System.Windows.Forms.ToolStripMenuItem buttonMapToolStripMenuItem;
         private System.Windows.Forms.CheckBox dualModeCheckBox;
+        private System.Windows.Forms.ComboBox ipCombobox;
     }
 }
 

@@ -11,6 +11,15 @@ namespace ControlStation {
 
     public partial class MainWindow : Form {
         
+        private class IPItem {
+            public string Name { get; set; }
+            public string Ip { get; set; }
+            public IPItem(string name, string ip) { Name = name; Ip = ip; }
+            public override string ToString() {
+                return Ip;
+            }
+        }
+
         Socket socket;
         DualShock4 ds4;
         Byte[] incomingBuf = new Byte[16];
@@ -37,7 +46,13 @@ namespace ControlStation {
             InitializeComponent();
             this.Visible = true;
             this.Focus();
-            textboxIP.Text = "pmc43.ddns.net";
+            ipCombobox.Items.Add(new IPItem("ares-wifi", "192.168.1.3"));
+            ipCombobox.Items.Add(new IPItem("ares-ethernet", "192.168.1.4"));
+            ipCombobox.Items.Add(new IPItem("(TEST) pmc43.ddns.net", "pmc43.ddns.net"));
+            ipCombobox.Items.Add(new IPItem("(TEST) localhost", "127.0.0.1"));
+            ipCombobox.DisplayMember = "Name";
+            ipCombobox.ValueMember = "Ip";
+            ipCombobox.SelectedIndex = 0;
             console.Text = GetTimestamp(DateTime.Now) + " initialized.";
             
         }
@@ -53,12 +68,12 @@ namespace ControlStation {
         private void buttonConnect_Click(object sender, EventArgs e) {
             doDisconnect = false;
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            log("Connecting to " + textboxIP.Text + "..");
+            log("Connecting to " + ipCombobox.SelectedItem.ToString() + "..");
             try {
-                socket.Connect(textboxIP.Text, 25555);
+                socket.Connect(ipCombobox.SelectedItem.ToString(), 25555);
                 log("connected!");
-                textboxIP.Enabled = false;
-                textboxIP.BackColor = System.Drawing.Color.Green;
+                ipCombobox.Enabled = false;
+                ipCombobox.BackColor = System.Drawing.Color.Green;
                 buttonConnect.Enabled = false;
                 disconnectButton.Enabled = true;
                 disconnectButton.BackColor = System.Drawing.Color.Transparent;
@@ -66,7 +81,11 @@ namespace ControlStation {
                 recv = Task.Run(() => {
                     while (true) {
                         if (doDisconnect) break;
-                        if (!isConnected(socket)) disconnectButton_Click(null, null); 
+                        if (!isConnected(socket)) {
+                            disconnectButton_Click(null, null);
+                            doDisconnect = true;
+                            break;
+                        }
                         socket.Receive(incomingBuf);
                         log("Robot: " + System.Text.Encoding.UTF8.GetString(incomingBuf));
                         var str = System.Text.Encoding.Default.GetString(incomingBuf);
@@ -140,8 +159,8 @@ namespace ControlStation {
                 log("Gamepad wiped");
                 recv.Dispose();
 
-                textboxIP.Enabled = true;
-                textboxIP.BackColor = System.Drawing.Color.White;
+                ipCombobox.Enabled = true;
+                ipCombobox.BackColor = System.Drawing.Color.White;
                 buttonConnect.Enabled = true;
                 disconnectButton.Enabled = false;
                 disconnectButton.BackColor = System.Drawing.Color.Silver;
@@ -219,6 +238,15 @@ namespace ControlStation {
                 send("y");
             }
             else send("*");
+        }
+
+        public void btnFakePress(object button) {
+            var btn = (FontAwesomeIcons.IconButton)button;
+            btn.BackColor = System.Drawing.Color.Gold;
+        }
+        public void btnFakeRelease(object button) {
+            var btn = (FontAwesomeIcons.IconButton)button;
+            btn.BackColor = System.Drawing.Color.Transparent;
         }
 
         private void enableCommands() {

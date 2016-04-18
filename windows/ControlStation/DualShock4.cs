@@ -140,6 +140,8 @@ namespace ControlStation {
                             mw.log("Right Trigger " + value);
                             rTrigger = value;
                             mw.send(value == 0 ? "*" : "^ " + rTrigger);
+                            if (value != 0) mw.btnFakePress(mw.goForward);
+                            else mw.btnFakeRelease(mw.goForward);
                         }
                     }
                     else if (offset == "RotationX") { // left trigger
@@ -148,34 +150,44 @@ namespace ControlStation {
                             mw.log("Left Trigger " + value);
                             lTrigger = value;
                             mw.send(value==0?"*":"v " + lTrigger);
+                            if (value != 0) mw.btnFakePress(mw.goBackward);
+                            else mw.btnFakeRelease(mw.goBackward);
                         }
                     }
                     else if(offset == "Buttons4") { // LEFT BUMPER
                         mw.log("LB " + normalizeButton(value));
                         if (normalizeButton(value)) {
                             mw.send("<");
+                            mw.btnFakePress(mw.turnCCW);
                         }
                         else {
                             mw.send("*");
+                            mw.btnFakeRelease(mw.turnCCW);
                         }
                     }
                     else if (offset == "Buttons5") { // RIGHT BUMPER
                         mw.log("RB " + normalizeButton(value));
                         if (normalizeButton(value)) {
                             mw.send(">");
+                            mw.btnFakePress(mw.turnCW);
                         }
                         else {
                             mw.send("*");
+                            mw.btnFakeRelease(mw.turnCW);
                         }
                     }
                     else if (offset == "Buttons0") { // square
                         mw.log("■ button: " + normalizeButton(value));
                     }
                     else if (offset == "Buttons1") { // X
-                        if (normalizeButton(value))
+                        if (normalizeButton(value)) {
                             mw.send("t");
-                        else
+                            mw.btnFakePress(mw.lowerBot);
+                        }
+                        else {
                             mw.send("y");
+                            mw.btnFakeRelease(mw.raiseBot);
+                        }
                         mw.log("X button: " + normalizeButton(value));
                     }
                     else if (offset == "Buttons2") { // O
@@ -183,13 +195,19 @@ namespace ControlStation {
                         mw.send("*");
                     }
                     else if (offset == "Buttons3") { // triangle
-                        if (normalizeButton(value))
+                        if (normalizeButton(value)) {
                             mw.send("u");
-                        else
+                            mw.btnFakePress(mw.raiseBot);
+                        }
+                        else {
                             mw.send("y");
+                            mw.btnFakeRelease(mw.raiseBot);
+                        }
                         mw.log("▲ button: " + normalizeButton(value));
                     }
                     // TODO : L1 / R1 + DPAD
+
+
                     else if (offset == "Buttons8" && value > 64) { 
                         // end gamepad on share button
                         mw.log("Share button pressed. Gamepad stopped.");

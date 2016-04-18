@@ -15,17 +15,24 @@ void setup() {
     pinMode(22, OUTPUT); // R ACTUATOR DIR
     pinMode(3, OUTPUT);  // L ACTUATOR SPEED
     pinMode(23, OUTPUT); // L ACTUATOR DIR
-    pinMode(11, OUTPUT); // EXCAVATE 1
+    pinMode(4, OUTPUT);  // FRONT EXCAVATE
+    pinMode(6, OUTPUT);  // REAR EXCAVATE
+    
+    pinMode(11, OUTPUT); // FRONT TORXIS
+    pinMode(12, OUTPUT); // REAR TORXIS
+    torxis_f.attach(11); // FRONT TORXIS
+    torxis_f.write(90);  
+    torxis_r.attach(12); // REAR TORXIS
+    torxis_r.attach(90); 
+
+    analogWrite(4, neutral);
     analogWrite(5, neutral);
+    analogWrite(6, neutral);
     analogWrite(7, neutral);
     analogWrite(8, neutral);
     analogWrite(10, neutral);
     analogWrite(12, neutral);
     analogWrite(13, neutral);
-    torxis_f.attach(11);
-    torxis_f.write(90);
-    //conveyor.write(86);
-    //smallTestServo.attach(10);
     inputString.reserve(32);
     Serial.begin(115200);
     Serial.println("ARES Ready");
@@ -139,29 +146,29 @@ void read_batt() {   // read battery voltage
     batt = batt / ( 910 / (float) (1600 + 910) );   // upconvert from 5V back to 12V
     Serial.println(batt);                           // print real voltage
 }
-void mine_f() {      // mine front drum     TODO
-    analogWrite(11, 230);
+void mine_f() {      // mine front drum     
+    analogWrite(4, 230);
 }
-void mine_r() {      // mine rear drum      TODO
-    
+void mine_r() {      // mine rear drum      
+    analogWrite(6, 230);
 }
-void dump_f() {      // dump front drum     TODO
-    
+void dump_f() {      // dump front drum     
+    analogWrite(4, 170);
 }
-void dump_r() {      // dump rear drum      TODO
-    
+void dump_r() {      // dump rear drum      
+    analogWrite(6, 170);
 }
-void raise_f(){      // raise front drum    TODO
+void raise_f(){      // raise front drum    
     torxis_f.write(100);
 }
-void lower_f(){      // lower front drum    TODO
+void lower_f(){      // lower front drum    
     torxis_f.write(80);
 }
-void raise_r(){      // raise rear drum     TODO
-    
+void raise_r(){      // raise rear drum     
+    torxis_r.write(100);
 }
-void lower_r(){      // lower rear drum     TODO
-    
+void lower_r(){      // lower rear drum     
+    torxis_r.write(80);
 }
 
 
