@@ -5,21 +5,20 @@ using System.Threading;
 namespace ControlStation {
     class DualShock4 {
 
-        MainWindow mw;
-        int rStickX = 0;
-        int rStickY = 0;
-        int rTrigger = 0;
-        int lTrigger = 0;
+        readonly MainWindow _mw;
+        int _rStickX = 0;
+        int _rStickY = 0;
+        int _rTrigger = 0;
+        int _lTrigger = 0;
         
         // constructor
         public DualShock4(MainWindow mainWind) {
-            this.mw = mainWind;
+            this._mw = mainWind;
         }
 
         // turn button states into booleans.
-        private bool normalizeButton(int value) {
-            if (value > 64) return true;
-            else return false;
+        private static bool normalizeButton(int value) {
+            return value > 64;
         }
 
         // turn stick state into level -5 to 5
@@ -53,24 +52,24 @@ namespace ControlStation {
             var joystickGuid = Guid.Empty;  // Find a Joystick Guid
             foreach (var deviceInstance in dInput.GetDevices(DeviceType.Gamepad,
                     DeviceEnumerationFlags.AllDevices)) {
-                mw.log("deviceInstance " + deviceInstance.InstanceName);
+                _mw.log("deviceInstance " + deviceInstance.InstanceName);
                 joystickGuid = deviceInstance.InstanceGuid;
             }
             // If Joystick not found, log to console.
             if (joystickGuid == Guid.Empty) {
-                mw.log("Error: No joystick or Gamepad found.");
+                _mw.log("Error: No joystick or Gamepad found.");
                 return;
             }
 
             // Instantiate the joystick
             var joystick = new Joystick(dInput, joystickGuid);
-            mw.log("Found Gamepad with GUID: " + joystickGuid);
-            mw.log("Name: " + joystick.Properties.InstanceName);
+            _mw.log("Found Gamepad with GUID: " + joystickGuid);
+            _mw.log("Name: " + joystick.Properties.InstanceName);
 
             // Query all suported ForceFeedback effects
             var allEffects = joystick.GetEffects();
             foreach (var effectInfo in allEffects)
-                mw.log("Effect available " + effectInfo.Name);
+                _mw.log("Effect available " + effectInfo.Name);
 
             // Set BufferSize in order to use buffered data.
             joystick.Properties.BufferSize = 128;
@@ -81,36 +80,36 @@ namespace ControlStation {
             // Set deadzones to 10%
             joystick.Properties.DeadZone = 1000;
 
-
-            /// Button Mappings:::
-            /// ============================
-            /// - Buttons0 = ■
-            /// - Buttons1 = x
-            /// - Buttons2 = ●
-            /// - Buttons3 = ▲
-            /// - Buttons4 = Left Bumper
-            /// - Buttons5 = Right Bumper
-            /// - Buttons6 = Left Trigger
-            /// - Buttons7 = Right Trigger
-            /// - Buttons8 = Share
-            /// - Buttons9 = Options
-            /// - Buttons10 = Left Stick
-            /// - Buttons11 = Right Stick
-            /// - Buttons12 = PS Button
-            /// 
-            /// - Right Stick: 
-            ///         (Y)                 (X)
-            ///     0     all up        0     all left
-            ///     32767 neutral       32767 neutral
-            ///     65535 all down      65535 all right
-            ///     
-            /// - DPAD (PointOfViewControllers0) ::
-            ///     0 = up
-            ///     18000 = down
-            ///     27000 = left
-            ///     9000 = right
-            ///     -1 = release
-            ///
+            
+            // Button Mappings:::
+            // ============================
+            // - Buttons0 = ■
+            // - Buttons1 = x
+            // - Buttons2 = ●
+            // - Buttons3 = ▲
+            // - Buttons4 = Left Bumper
+            // - Buttons5 = Right Bumper
+            // - Buttons6 = Left Trigger
+            // - Buttons7 = Right Trigger
+            // - Buttons8 = Share
+            // - Buttons9 = Options
+            // - Buttons10 = Left Stick
+            // - Buttons11 = Right Stick
+            // - Buttons12 = PS Button
+            // 
+            // - Right Stick: 
+            //         (Y)                 (X)
+            //     0     all up        0     all left
+            //     32767 neutral       32767 neutral
+            //     65535 all down      65535 all right
+            //     
+            // - DPAD (PointOfViewControllers0) ::
+            //     0 = up
+            //     18000 = down
+            //     27000 = left
+            //     9000 = right
+            //     -1 = release
+            //
             
             while (true) {
                 joystick.Poll();
@@ -122,95 +121,95 @@ namespace ControlStation {
 
                     if (offset == "X") { // left stick X
                         value = normalizeStick(value);
-                        if (value != rStickX) {
-                            mw.log(offset + " " + value);
-                            rStickX = value;
+                        if (value != _rStickX) {
+                            _mw.log(offset + " " + value);
+                            _rStickX = value;
                         }
                     }
                     else if (offset == "Y") {
                         value = normalizeStick(value); // left stick Y
-                        if (value != rStickY) {
-                            mw.log(offset + " " + value);
-                            rStickY = value;
+                        if (value != _rStickY) {
+                            _mw.log(offset + " " + value);
+                            _rStickY = value;
                         }
                     }
                     else if (offset == "RotationY") { // right trigger
                         value = normalizeTrigger(value);
-                        if (value != rTrigger) {
-                            mw.log("Right Trigger " + value);
-                            rTrigger = value;
-                            mw.send(value == 0 ? "*" : "^ " + rTrigger);
-                            if (value != 0) mw.btnFakePress(mw.goForward);
-                            else mw.btnFakeRelease(mw.goForward);
+                        if (value != _rTrigger) {
+                            _mw.log("Right Trigger " + value);
+                            _rTrigger = value;
+                            _mw.send(value == 0 ? "*" : "^ " + _rTrigger);
+                            if (value != 0) _mw.btnFakePress(_mw.goForward);
+                            else _mw.btnFakeRelease(_mw.goForward);
                         }
                     }
                     else if (offset == "RotationX") { // left trigger
                         value = normalizeTrigger(value);
-                        if (value != lTrigger) {
-                            mw.log("Left Trigger " + value);
-                            lTrigger = value;
-                            mw.send(value==0?"*":"v " + lTrigger);
-                            if (value != 0) mw.btnFakePress(mw.goBackward);
-                            else mw.btnFakeRelease(mw.goBackward);
+                        if (value != _lTrigger) {
+                            _mw.log("Left Trigger " + value);
+                            _lTrigger = value;
+                            _mw.send(value==0?"*":"v " + _lTrigger);
+                            if (value != 0) _mw.btnFakePress(_mw.goBackward);
+                            else _mw.btnFakeRelease(_mw.goBackward);
                         }
                     }
                     else if(offset == "Buttons4") { // LEFT BUMPER
-                        mw.log("LB " + normalizeButton(value));
+                        _mw.log("LB " + normalizeButton(value));
                         if (normalizeButton(value)) {
-                            mw.send("<");
-                            mw.btnFakePress(mw.turnCCW);
+                            _mw.send("<");
+                            _mw.btnFakePress(_mw.turnCCW);
                         }
                         else {
-                            mw.send("*");
-                            mw.btnFakeRelease(mw.turnCCW);
+                            _mw.send("*");
+                            _mw.btnFakeRelease(_mw.turnCCW);
                         }
                     }
                     else if (offset == "Buttons5") { // RIGHT BUMPER
-                        mw.log("RB " + normalizeButton(value));
+                        _mw.log("RB " + normalizeButton(value));
                         if (normalizeButton(value)) {
-                            mw.send(">");
-                            mw.btnFakePress(mw.turnCW);
+                            _mw.send(">");
+                            _mw.btnFakePress(_mw.turnCW);
                         }
                         else {
-                            mw.send("*");
-                            mw.btnFakeRelease(mw.turnCW);
+                            _mw.send("*");
+                            _mw.btnFakeRelease(_mw.turnCW);
                         }
                     }
                     else if (offset == "Buttons0") { // square
-                        mw.log("■ button: " + normalizeButton(value));
+                        _mw.log("■ button: " + normalizeButton(value));
                     }
                     else if (offset == "Buttons1") { // X
                         if (normalizeButton(value)) {
-                            mw.send("t");
-                            mw.btnFakePress(mw.lowerBot);
+                            _mw.send("t");
+                            _mw.btnFakePress(_mw.lowerBot);
                         }
                         else {
-                            mw.send("y");
-                            mw.btnFakeRelease(mw.raiseBot);
+                            _mw.send("y");
+                            _mw.btnFakeRelease(_mw.raiseBot);
                         }
-                        mw.log("X button: " + normalizeButton(value));
+                        _mw.log("X button: " + normalizeButton(value));
                     }
                     else if (offset == "Buttons2") { // O
-                        mw.log("O button: " + normalizeButton(value));
-                        mw.send("*");
+                        _mw.log("O button: " + normalizeButton(value));
+                        _mw.send("*");
                     }
                     else if (offset == "Buttons3") { // triangle
                         if (normalizeButton(value)) {
-                            mw.send("u");
-                            mw.btnFakePress(mw.raiseBot);
+                            _mw.send("u");
+                            _mw.btnFakePress(_mw.raiseBot);
                         }
                         else {
-                            mw.send("y");
-                            mw.btnFakeRelease(mw.raiseBot);
+                            _mw.send("y");
+                            _mw.btnFakeRelease(_mw.raiseBot);
                         }
-                        mw.log("▲ button: " + normalizeButton(value));
+                        _mw.log("▲ button: " + normalizeButton(value));
                     }
                     // TODO : L1 / R1 + DPAD
 
 
                     else if (offset == "Buttons8" && value > 64) { 
                         // end gamepad on share button
-                        mw.log("Share button pressed. Gamepad stopped.");
+                        _mw.log("Share button pressed. Gamepad stopped.");
                         return;
                     }
 

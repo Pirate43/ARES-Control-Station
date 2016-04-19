@@ -11,10 +11,10 @@ namespace ControlStation {
 
     public partial class MainWindow : Form {
         
-        private class IPItem {
-            public string Name { get; set; }
-            public string Ip { get; set; }
-            public IPItem(string name, string ip) { Name = name; Ip = ip; }
+        private class IpItem {
+            private string Name { get; set; }
+            private string Ip { get; set; }
+            public IpItem(string name, string ip) { Name = name; Ip = ip; }
             public override string ToString() {
                 return Ip;
             }
@@ -22,7 +22,7 @@ namespace ControlStation {
 
         Socket socket;
         DualShock4 ds4;
-        Byte[] incomingBuf = new Byte[32];
+        byte[] incomingBuf = new byte[32];
         Task recv;
         bool doDisconnect = false;
         bool global_dualMode = false;
@@ -45,12 +45,12 @@ namespace ControlStation {
 
         public MainWindow() {
             InitializeComponent();
-            this.Visible = true;
-            this.Focus();
-            ipCombobox.Items.Add(new IPItem("ares-wifi", "192.168.1.3"));
-            ipCombobox.Items.Add(new IPItem("ares-ethernet", "192.168.1.4"));
-            ipCombobox.Items.Add(new IPItem("(TEST) pmc43.ddns.net", "pmc43.ddns.net"));
-            ipCombobox.Items.Add(new IPItem("(TEST) localhost", "127.0.0.1"));
+            Visible = true;
+            Focus();
+            ipCombobox.Items.Add(new IpItem("ares-wifi", "192.168.1.3"));
+            ipCombobox.Items.Add(new IpItem("ares-ethernet", "192.168.1.4"));
+            ipCombobox.Items.Add(new IpItem("(TEST) pmc43.ddns.net", "pmc43.ddns.net"));
+            ipCombobox.Items.Add(new IpItem("(TEST) localhost", "127.0.0.1"));
             ipCombobox.DisplayMember = "Name";
             ipCombobox.ValueMember = "Ip";
             ipCombobox.SelectedIndex = 0;
@@ -97,7 +97,7 @@ namespace ControlStation {
                             str = Regex.Replace(str, @"\s+", "");
                             float batt = float.Parse(str);
                             int percent = (int) (((batt-12.0) * 100.0)/(13.6-12.0));
-                            labelBatteryVolts.Text = batt.ToString() + "v   -   " + percent + "%";
+                            labelBatteryVolts.Text = batt + "v   -   " + percent + "%";
                             /* range = max - min
                             correctedStartValue = input - min
                             percentage = (correctedStartValue * 100) / range */
@@ -109,7 +109,7 @@ namespace ControlStation {
                 });
                 
                 // Create a timer
-                System.Timers.Timer myTimer = new System.Timers.Timer();
+                var myTimer = new System.Timers.Timer();
                 // Tell the timer what to do when it elapses
                 myTimer.Elapsed += new ElapsedEventHandler(requestBatt);
                 // Set it to go off every <milliseconds>
@@ -184,16 +184,18 @@ namespace ControlStation {
         }
 
         //################      HELPER FUNCTIONS      ##################\\
-        public void log(String s) {
+        public void log(string s) {
             console.AppendText("\r\n" + GetTimestamp(DateTime.Now) + " " + s + "");
         }
-        public static String GetTimestamp(DateTime value) {
+
+        private static string GetTimestamp(DateTime value) {
             return value.ToString("HH:mm:ss");
         }
-        public static String GetFilePathTimestamp(DateTime value) {
+
+        private static string GetFilePathTimestamp(DateTime value) {
             return value.ToString("yyyyMMdd--HHmmss");
         }
-        public void send(String s) {
+        public void send(string s) {
             log("GUI: " + s);
             try {
                 socket.Send(System.Text.Encoding.UTF8.GetBytes(s + ";"));
@@ -280,7 +282,7 @@ namespace ControlStation {
         /// <param name="socket">The socket to check if it's connected.</param>
         /// <returns>true if we're connected</returns>
         /// <returns>false if we're not connected</returns>
-        public static bool isConnected(Socket socket) {
+        private static bool isConnected(Socket socket) {
             try
             {
                 return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
@@ -303,11 +305,9 @@ namespace ControlStation {
             buttonMap.Show();
         }
 
-        private void dualMode(object sender, EventArgs e) {
-            if (dualModeCheckBox.Checked)
-                global_dualMode = true;
-            else
-                global_dualMode = false;
+        private void DualMode(object sender, EventArgs e)
+        {
+            global_dualMode = dualModeCheckBox.Checked;
         }
     }
 }
