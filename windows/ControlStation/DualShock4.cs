@@ -10,6 +10,8 @@ namespace ControlStation {
         int _rStickY = 0;
         int _rTrigger = 0;
         int _lTrigger = 0;
+        private bool _forward = false;
+        private bool _reverse = false;
         
         // constructor
         public DualShock4(MainWindow mainWind) {
@@ -115,9 +117,9 @@ namespace ControlStation {
                 joystick.Poll();
                 var datas = joystick.GetBufferedData();
                 foreach (var state in datas) {
-                    String offset = state.Offset.ToString();
+                    string offset = state.Offset.ToString();
                     int value = int.Parse(state.Value.ToString());
-                    //mw.log(offset + " " + value); //LOG EVERYTHING
+                    //_mw.log(offset + " " + value); //LOG EVERYTHING
 
                     if (offset == "X") { // left stick X
                         value = normalizeStick(value);
@@ -135,22 +137,26 @@ namespace ControlStation {
                     }
                     else if (offset == "RotationY") { // right trigger
                         value = normalizeTrigger(value);
-                        if (value != _rTrigger) {
+                        if (value != _rTrigger && !_reverse) {
                             _mw.log("Right Trigger " + value);
                             _rTrigger = value;
                             _mw.send(value == 0 ? "*" : "^ " + _rTrigger);
                             if (value != 0) _mw.btnFakePress(_mw.goForward);
                             else _mw.btnFakeRelease(_mw.goForward);
+                            _reverse = false;
+                            _forward = true;
                         }
                     }
                     else if (offset == "RotationX") { // left trigger
                         value = normalizeTrigger(value);
-                        if (value != _lTrigger) {
+                        if (value != _lTrigger && !_forward) {
                             _mw.log("Left Trigger " + value);
                             _lTrigger = value;
                             _mw.send(value==0?"*":"v " + _lTrigger);
                             if (value != 0) _mw.btnFakePress(_mw.goBackward);
                             else _mw.btnFakeRelease(_mw.goBackward);
+                            _reverse = true;
+                            _forward = false;
                         }
                     }
                     else if(offset == "Buttons4") { // LEFT BUMPER
@@ -204,7 +210,8 @@ namespace ControlStation {
                         }
                         _mw.log("▲ button: " + normalizeButton(value));
                     }
-                    // TODO : L1 / R1 + DPAD
+                    // TODO: SQUARE AND DPAD
+                    // TODO: RIGHT STICK
 
 
                     else if (offset == "Buttons8" && value > 64) { 
