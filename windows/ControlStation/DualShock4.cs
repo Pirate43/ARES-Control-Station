@@ -1,21 +1,20 @@
-﻿using SharpDX.DirectInput;
-using System;
-using System.Threading;
+﻿using System;
+using SharpDX.DirectInput;
 
 namespace ControlStation {
     class DualShock4 {
 
         readonly MainWindow _mw;
-        int _rStickX = 0;
-        int _rStickY = 0;
-        int _rTrigger = 0;
-        int _lTrigger = 0;
-        private bool _forward = false;
-        private bool _reverse = false;
+        int _rStickX;
+        int _rStickY;
+        int _rTrigger;
+        int _lTrigger;
+        private bool _forward;
+        private bool _reverse;
         
         // constructor
         public DualShock4(MainWindow mainWind) {
-            this._mw = mainWind;
+            _mw = mainWind;
         }
 
         // turn button states into booleans.
@@ -24,29 +23,31 @@ namespace ControlStation {
         }
 
         // turn stick state into level -5 to 5
-        private int normalizeStick(int value) {
+        private int normalizeStick(int value)
+        {
             if (value > 65000) return -5;
-            else if (value <= 65000 && value > 55000) return -4;
-            else if (value <= 55000 && value > 45000) return -3;
-            else if (value <= 45000 && value > 40000) return -2;
-            else if (value <= 40000 && value > 35000) return -1;
-            else if (value <= 40000 && value > 23000) return 0;
-            else if (value <= 23000 && value > 18000) return 1;
-            else if (value <= 18000 && value > 13000) return 2;
-            else if (value <= 13000 && value > 8000) return 3;
-            else if (value <= 8000 && value > 3000) return 4;
-            else if (value <= 3000) return 5;
-            else throw new Exception("bad stick value (DualShock4.cs)");
+            if (value <= 65000 && value > 55000) return -4;
+            if (value <= 55000 && value > 45000) return -3;
+            if (value <= 45000 && value > 40000) return -2;
+            if (value <= 40000 && value > 35000) return -1;
+            if (value <= 40000 && value > 23000) return 0;
+            if (value <= 23000 && value > 18000) return 1;
+            if (value <= 18000 && value > 13000) return 2;
+            if (value <= 13000 && value > 8000) return 3;
+            if (value <= 8000 && value > 3000) return 4;
+            if (value <= 3000) return 5;
+            throw new Exception("bad stick value (DualShock4.cs)");
         }
 
-        private int normalizeTrigger(int value) {
+        private int normalizeTrigger(int value)
+        {
             if (value > 60000) return 5;
-            else if (value <= 60000 && value > 50000) return 4;
-            else if (value <= 50000 && value > 40000) return 3;
-            else if (value <= 40000 && value > 30000) return 2;
-            else if (value <= 30000 && value > 20000) return 1;
-            else if (value <= 20000) return 0;
-            else throw new Exception("bad trigger value (DualShock4.cs)");
+            if (value <= 60000 && value > 50000) return 4;
+            if (value <= 50000 && value > 40000) return 3;
+            if (value <= 40000 && value > 30000) return 2;
+            if (value <= 30000 && value > 20000) return 1;
+            if (value <= 20000) return 0;
+            throw new Exception("bad trigger value (DualShock4.cs)");
         }
 
         public void gamepad() {
@@ -219,24 +220,6 @@ namespace ControlStation {
                         _mw.log("Share button pressed. Gamepad stopped.");
                         return;
                     }
-
-
-
-                    
-
-
-                    /*
-                    if (offset == "Y" && value == 0 && !sent) {
-                        mw.send("^");
-                        mw.log("Sending ^");
-                        sent = !sent;
-                    }
-
-                    if (offset == "Y" && value > 0 && sent) {
-                        mw.send("*");
-                        mw.log("Sending *");
-                        sent = !sent;
-                    }*/
                 }
             }
         }
