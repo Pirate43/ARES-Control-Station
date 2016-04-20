@@ -219,24 +219,6 @@ namespace ControlStation {
                         _mw.log("Share button pressed. Gamepad stopped.");
                         return;
                     }
-
-
-
-                    
-
-
-                    /*
-                    if (offset == "Y" && value == 0 && !sent) {
-                        mw.send("^");
-                        mw.log("Sending ^");
-                        sent = !sent;
-                    }
-
-                    if (offset == "Y" && value > 0 && sent) {
-                        mw.send("*");
-                        mw.log("Sending *");
-                        sent = !sent;
-                    }*/
                 }
             }
         }

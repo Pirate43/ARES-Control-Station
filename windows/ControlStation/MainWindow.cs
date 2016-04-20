@@ -54,7 +54,7 @@ namespace ControlStation {
             ipCombobox.DisplayMember = "Name";
             ipCombobox.ValueMember = "Ip";
             ipCombobox.SelectedIndex = 0;
-            console.Text = GetTimestamp(DateTime.Now) + " initialized.";
+            console.Text = string.Format("{0} initialized.", GetTimestamp(DateTime.Now));
             
         }
 
@@ -82,7 +82,7 @@ namespace ControlStation {
                 recv = Task.Run(() => {
                     while (true) {
                         if (doDisconnect) break;
-                        if (!isConnected(socket)) {
+                        if (!IsConnected(socket)) {
                             disconnectButton_Click(null, null);
                             doDisconnect = true;
                             break;
@@ -97,7 +97,7 @@ namespace ControlStation {
                             str = Regex.Replace(str, @"\s+", "");
                             float batt = float.Parse(str);
                             int percent = (int) (((batt-12.0) * 100.0)/(13.6-12.0));
-                            labelBatteryVolts.Text = batt + "v   -   " + percent + "%";
+                            labelBatteryVolts.Text = string.Format("{0}v   -   {1}%", batt, percent);
                             /* range = max - min
                             correctedStartValue = input - min
                             percentage = (correctedStartValue * 100) / range */
@@ -107,15 +107,11 @@ namespace ControlStation {
                         }
                     }
                 });
-                
-                // Create a timer
-                var myTimer = new System.Timers.Timer();
-                // Tell the timer what to do when it elapses
-                myTimer.Elapsed += new ElapsedEventHandler(requestBatt);
-                // Set it to go off every <milliseconds>
-                myTimer.Interval = 20000;
-                // And start it        
-                myTimer.Enabled = true;
+
+                var myTimer = new System.Timers.Timer(); // Create a timer
+                myTimer.Elapsed += new ElapsedEventHandler(RequestBatt); // Tell the timer what to do when it elapses
+                myTimer.Interval = 20000; // Set it to go off every <milliseconds>
+                myTimer.Enabled = true; // And start it        
             }
             catch (Exception ex) {
                 log("Problem connecting: " + ex.Message);
@@ -147,7 +143,7 @@ namespace ControlStation {
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) // show about dialog
         {
-            AboutBox a = new AboutBox();
+            var a = new AboutBox();
             a.Show();
         }
         #endregion
@@ -177,10 +173,9 @@ namespace ControlStation {
         /// sends it to the robot.
         /// </summary>
         private void sendCustomCommand(object sender, KeyPressEventArgs e) {
-            if (e.KeyChar == (char)Keys.Return) {
-                send(txtCustomCommand.Text);
-                txtCustomCommand.Text = "";
-            }
+            if (e.KeyChar != (char) Keys.Return) return;
+            send(txtCustomCommand.Text);
+            txtCustomCommand.Text = "";
         }
 
         //################      HELPER FUNCTIONS      ##################\\
@@ -282,7 +277,7 @@ namespace ControlStation {
         /// <param name="socket">The socket to check if it's connected.</param>
         /// <returns>true if we're connected</returns>
         /// <returns>false if we're not connected</returns>
-        private static bool isConnected(Socket socket) {
+        private static bool IsConnected(Socket socket) {
             try
             {
                 return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
@@ -293,7 +288,7 @@ namespace ControlStation {
         /// <summary>
         /// sends a letter 'b' to the robot to receive battery voltage
         /// </summary>
-        private void requestBatt(object source, ElapsedEventArgs e) {
+        private void RequestBatt(object source, ElapsedEventArgs e) {
             send("b");
         }
 
@@ -301,7 +296,7 @@ namespace ControlStation {
         /// shows the button mapping window
         /// </summary>
         private void buttonMapToolStripMenuItem_Click(object sender, EventArgs e) {
-            ButtonMap buttonMap = new ButtonMap();
+            var buttonMap = new ButtonMap();
             buttonMap.Show();
         }
 
