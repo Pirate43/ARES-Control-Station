@@ -80,7 +80,7 @@ namespace ControlStation {
                 disconnectButton.BackColor = System.Drawing.Color.Transparent;
                 enableCommands();
                 recv = Task.Run(() => {
-                    while (true) {
+                    while (!doDisconnect) {
                         if (doDisconnect) break;
                         if (!IsConnected(socket)) {
                             disconnectButton_Click(null, null);

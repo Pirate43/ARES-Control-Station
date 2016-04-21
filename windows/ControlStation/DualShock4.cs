@@ -142,10 +142,16 @@ namespace ControlStation {
                             _mw.log("Right Trigger " + value);
                             _rTrigger = value;
                             _mw.send(value == 0 ? "*" : "^ " + _rTrigger);
-                            if (value != 0) _mw.btnFakePress(_mw.goForward);
-                            else _mw.btnFakeRelease(_mw.goForward);
-                            _reverse = false;
-                            _forward = true;
+                            if (value != 0) {
+                                _mw.btnFakePress(_mw.goForward);
+                                _reverse = false;
+                                _forward = true;
+                            }
+                            else {
+                                _mw.btnFakeRelease(_mw.goForward);
+                                _reverse = false;
+                                _forward = false;
+                            }
                         }
                     }
                     else if (offset == "RotationX") { // left trigger
@@ -154,10 +160,16 @@ namespace ControlStation {
                             _mw.log("Left Trigger " + value);
                             _lTrigger = value;
                             _mw.send(value==0?"*":"v " + _lTrigger);
-                            if (value != 0) _mw.btnFakePress(_mw.goBackward);
-                            else _mw.btnFakeRelease(_mw.goBackward);
-                            _reverse = true;
-                            _forward = false;
+                            if (value != 0) {
+                                _mw.btnFakePress(_mw.goBackward);
+                                _reverse = true;
+                                _forward = false;
+                            }
+                            else {
+                                _mw.btnFakeRelease(_mw.goBackward);
+                                _reverse = false;
+                                _forward = false;
+                            }
                         }
                     }
                     else if(offset == "Buttons4") { // LEFT BUMPER
@@ -192,7 +204,7 @@ namespace ControlStation {
                         }
                         else {
                             _mw.send("y");
-                            _mw.btnFakeRelease(_mw.raiseBot);
+                            _mw.btnFakeRelease(_mw.lowerBot);
                         }
                         _mw.log("X button: " + normalizeButton(value));
                     }
