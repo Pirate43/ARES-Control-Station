@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 from time import sleep
 import sys
-import motors
-import serialread
-import network
+from . import motors
+from . import serialread
+from . import network
 
 import platform
 WINENV = 'Windows' in platform.system()
